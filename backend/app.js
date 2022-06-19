@@ -4,7 +4,12 @@
 const http = require('https') //import https moduke
 
 
-var url = "https://api.spoonacular.com/recipes/findByIngredients/?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd"
+var url = "https://api.spoonacular.com/recipes/findByIngredients/?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&ingredients="
+//for each ingredient in list
+url = url + 'apples,+sugar,+flour'
+var num = 2;
+url = url + '&number=' + num;
+
 // Sending the request
 //const req = http.request(options, (res) => {
 const req = http.request(url, (res) => {
