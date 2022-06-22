@@ -3,7 +3,15 @@
 //const express = require("express"); // include express
 const http = require('https') //import https moduke
 
-
+const options = {
+    hostname: 'api.spoonacular.com',
+    port: 443,
+    path: '/recipes/findByIngredients',
+    method: 'GET',
+    query:{
+        apiKey: '8d51cf1e41ad42fcb9c2699fbba2cfbd', ingredients: 'apples'
+    }
+  };
 var url = "https://api.spoonacular.com/recipes/findByIngredients/?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&ingredients=apples"
 //for each ingredient in list
 // url = url + 'apples,+sugar,+flour'
