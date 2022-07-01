@@ -3,9 +3,9 @@ const mysql = require('mysql');
 //Make connection to MySQL recipes database
 var connnection = mysql.createConnection({
   host: "localhost",
-  user: "JDBC",
-  password: "jdbcisweird",
-  database: "recipes"
+  user: "recipeServer",
+  password: "recipe",
+  database: "recipes",
 }); 
 
 //Establish connection
