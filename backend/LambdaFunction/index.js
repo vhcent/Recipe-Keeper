@@ -45,9 +45,9 @@ function getReq(req){
         return resultGen(400, 'Invalid parameters for GET request')
     }
     
-    if (query.all === 'true') dbManager.getAll(res);
+    if (query.all === 'true') return dbManager.getAll();
 
-    else dbManager.getRecipe(query.id, res);
+    else return dbManager.getRecipe(query.id);
     //res.send('We done with get request')
 }
 
