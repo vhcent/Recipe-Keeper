@@ -16,11 +16,6 @@ connection.connect((err) => {
     else console.log("Connected!");
 });
 
-function errorStatus(err, result, action) {
-    if (err) console.log("Error", err);
-    else console.log(action);
-}
-
 connection.query("USE recipe_app");
 
 connection.query("select * from User", (err, result) => {
@@ -31,9 +26,9 @@ connection.query("select * from Recipe", (err, result) => {
     console.log(result);
 });
 
-connection.query("delete from Recipe", (err, result) => {
-    console.log(result);
-});
+// connection.query("delete from Recipe", (err, result) => {
+//     console.log(result);
+// });
 
 // connection.query(
 //     `insert into Recipe (Name, URL, UserID) values("cake", "yahoo.com", 1);`,
@@ -46,3 +41,5 @@ connection.query("delete from Recipe", (err, result) => {
 //         //getRecipe()//get the latest and send it back
 //     }
 // );
+
+connection.end();
