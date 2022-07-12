@@ -52,7 +52,6 @@ function getReq(req){
     let query = req.queryStringParameters;
     console.log(`Get Recipes with params id ${query.id}, all ${query.all}, userid ${query.userid}`);
 
-    /*
     const schema = Joi.object({
         all: Joi.boolean().required(),
         id: Joi.number().positive().required(),
@@ -61,13 +60,11 @@ function getReq(req){
 
     let result = validateJOI(schema, query)
     console.log(result)
-    */
-   /*
     if(!result){
         console.log("Returning 400 and Invalid params")
         return resultGen(400, 'Invalid parameters for GET request')
     }
-    */
+    
     if (query.all === 'true') return dbManager.getAll(query.userid);
 
     else return dbManager.getRecipe(query.id, query.userid);
@@ -93,7 +90,6 @@ function deleteReq(req){
 }
 
 function postReq(req){
-    /*
     const schema = Joi.object({
         name: Joi.string().required(),
         url: Joi.string().min(3).required(),
@@ -104,8 +100,10 @@ function postReq(req){
         console.log("Bad parameters")
         return resultGen(400, "Invalid parameters for POST request")
     }
-    */
-    return dbManager.addRecipe(req.body.name, req.body.url, req.body.userid)
+
+    dbManager.addRecipe(req.body.name, req.body.url, req.body.userid)
+
+    return resultGen(200, "We did it")
 }
 
 function resultGen(status, MSG){

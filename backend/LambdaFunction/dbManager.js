@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     user: "hcent",
     password: "BananaBlast118!",
     port: "3306",
-    databse: "recipe-app-database",
+    database: "recipe_app",
 }); 
 
 //Establish connection
@@ -28,32 +28,33 @@ function contained(name, URL){
 */
 
 function addRecipe(name, URL, UserID){
-
-    connection.query(`select exists(select * from saved where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
-    (err, result, fields) => { 
-        var res = result[0][fields[0].name]; //get the result from the SQL command
-        console.log(result);
-        console.log(fields);
-        if(err){ 
-            console.log("Error", err)
-            return resultGen(204, 'Something went wrong')
-             //wrong code probably
-            
-        }
-        if(res){
-            console.log("Duplicate")
-            return resultGen(204, 'Cannot add duplicates')
-             //wrong code probably
-            
-        } //Duplicate exists
-        //Second API call made inside a callback function bc it depends on the result
-        connection.query(`insert into Recipe (Name, URL, UserID) values("${name}", "${URL}", "${UserID}");`, 
-            (err, result) => { 
-                errorStatus(err, result, `added recipe ${name} with URL ${URL}`) 
-                //getRecipe()//get the latest and send it back 
-            })
-    })
-    
+    return new Promise(function(resolve, reject){
+        connection.query(`select exists(select * from Recipe where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
+        (err, result, fields) => { 
+            var res = result[0][fields[0].name]; //get the result from the SQL command
+            console.log(result);
+            console.log(res);
+           
+            if(err){ 
+                console.log("Error", err)
+                resolve(resultGen(204, 'Something went wrong'))
+                //wrong code probably    
+            }
+            if(res){
+                console.log("Duplicate")
+                resolve(resultGen(204, 'Cannot add duplicates'))
+                //wrong code probably
+                
+            } //Duplicate exists
+            //Second API call made inside a callback function bc it depends on the result
+            else connection.query(`insert into Recipe (Name, URL, UserID) values("${name}", "${URL}", "${UserID}");`, 
+                (err, result) => { 
+                    resolve(resultGen(200, `added recipe ${name} with URL ${URL}`))
+                    console.log(`added recipe ${name} with URL ${URL} why am I here`) 
+                    //getRecipe()//get the latest and send it back 
+                })
+        })
+    });
 }
 
 //Might not be used
@@ -76,36 +77,17 @@ function getRecipe(ID, UserID){
 
 //Updated This
 function getAll(UserID){
-    /*
-    return new Promise((resolve, reject) => {
-        connection.query(`select * from recipe where userid = "${UserID}";`,
+    return new Promise(function(resolve, reject){
+        connection.query(`select * from Recipe where userid = "${UserID}";`,
+        //connection.query(`show tables;`,
         (err, result, fields) =>  {
-            let set = [] 
-            Object.keys(result).forEach(function(key) {
-                set.push(result[key])
-            });
-            console.log(set)
             if(err){ 
                 console.log("Error", err)
-                return reject(resultGen(204, 'Recipe not found'))
+                reject(resultGen(204, 'Recipe not found'))
             }
-            return resolve(resultGen(400, set))
+            resolve(resultGen(400, result))
         })
     });
-*/
-    connection.query(`select * from recipe where userid = "${UserID}";`,
-    (err, result, fields) =>  {
-        let set = [] 
-        Object.keys(result).forEach(function(key) {
-            set.push(result[key])
-        });
-        console.log(set)
-        if(err){ 
-            console.log("Error", err)
-            return resultGen(204, 'Recipe not found')
-        }
-        return resultGen(400, set)
-    })
 }
 
 function deleteRecipe(ID, UserID){
@@ -126,4 +108,4 @@ function resultGen(status, MSG){
     };
 }
 
-module.exports =  {addRecipe, deleteRecipe, getAll, getRecipe};
+module.exports =  {addRecipe, deleteRecipe, getAll, getRecipe, resultGen};
