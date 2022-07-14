@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     user: "hcent",
     password: "BananaBlast118!",
     port: "3306",
-    database: "recipe-app-database",
+    database: "recipe_app",
 }); 
 
 //Establish connection

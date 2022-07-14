@@ -44,6 +44,7 @@ function addRecipe(name, URL, UserID) {
                 console.log(result);
                 console.log(res);
 
+<<<<<<< Updated upstream
                 if (err) {
                     console.log("Error", err);
                     resolve(resultGen(204, "Something went wrong"));
@@ -89,6 +90,44 @@ async function deleteRecipe(ID) {
             }
         );
     });
+=======
+//Updated This
+function getAll(UserID){
+    return new Promise(function(resolve, reject){
+        connection.query(`select * from Recipe where userid = "${UserID}";`,
+        //connection.query(`show tables;`,
+        (err, result, fields) =>  {
+            if(err){ 
+                console.log("Error", err)
+                resolve(resultGen(204, 'Recipe list not found'))
+            }
+            else resolve(resultGen(400, result))
+        })
+    });
+}
+
+function deleteRecipe(ID, UserID){
+    return new Promise(function(resolve, reject){
+        connection.query(`delete from Recipe where RecipeID = ${ID} and userid = "${UserID}";`,
+        (err) =>  { 
+            if(err){ 
+                console.log("Error", err)
+                resolve(resultGen(204, 'Cannot delete'))
+            }
+            else{
+                console.log(`deleted recipe with ID: ${ID}`)
+                resolve(resultGen(200, "Success")); //tentative
+            }
+        })
+    });
+}
+
+function resultGen(status, MSG){
+    return {
+        statusCode: status,
+        body: JSON.stringify(MSG),
+    };
+>>>>>>> Stashed changes
 }
 
 module.exports = { getAll, addRecipe, deleteRecipe };

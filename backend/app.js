@@ -6,11 +6,8 @@ const http = require('https') //import https moduke
 const options = {
     hostname: 'api.spoonacular.com',
     port: 443,
-    path: '/recipes/findByIngredients',
+    path: '/recipes/findByIngredients/?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&ingredients=apples',
     method: 'GET',
-    query:{
-        apiKey: '8d51cf1e41ad42fcb9c2699fbba2cfbd', ingredients: 'apples'
-    }
   };
 var url = "https://api.spoonacular.com/recipes/findByIngredients/?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&ingredients=apples"
 //for each ingredient in list
@@ -19,8 +16,8 @@ var url = "https://api.spoonacular.com/recipes/findByIngredients/?apiKey=8d51cf1
 // url = url + '&number=' + num;
 
 // Sending the request
-//const req = http.request(options, (res) => {
-const req = http.request(url, (res) => {
+const req = http.request(options, (res) => {
+//const req = http.request(url, (res) => {
     let data = ''
 
     res.on('data', (chunk) => {

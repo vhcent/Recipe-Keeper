@@ -18,6 +18,8 @@ exports.handler = async (event) => {
         case 'DELETE':
             return deleteReq(event);
     }
+
+    
     /*
     if(event.httpMethod == 'POST'){
         let test = local();
@@ -77,7 +79,7 @@ function getReq(req){
 function deleteReq(req){
     let query = req.queryStringParameters
     console.log(`Delete Recipes with params id ${query.id} and userid ${query.userid}`);
-
+/*
     const schema = Joi.object({
         id: Joi.number().positive().required(),
         userid: Joi.number().positive().required()
@@ -88,10 +90,20 @@ function deleteReq(req){
         console.log("Bad parameters")
         return resultGen(400, "invalid parameters for delete request")
     }
+    */
     return dbManager.deleteRecipe(query.id, query.userid);
     //res.send('We done with get request')
 }
 
+
+/*
+"body": {
+    "name": "Brownies",
+    "url": "dummies.org",
+    "userid": "1"
+  }
+*/
+//name: Brownies, url: dummies.org, userid: 1
 function postReq(req){
     /*
     const schema = Joi.object({
@@ -105,7 +117,9 @@ function postReq(req){
         return resultGen(400, "Invalid parameters for POST request")
     }
     */
-    return dbManager.addRecipe(req.body.name, req.body.url, req.body.userid)
+    let body =  JSON.parse(req.body)
+    console.log(body)
+    return dbManager.addRecipe(body.name, body.url, body.userid)
 }
 
 function resultGen(status, MSG){
