@@ -1,96 +1,80 @@
-const mysql = require("mysql");
+const mysql = require('mysql');
 
+// Make connection to MySQL recipes database
 var connection = mysql.createConnection({
     host: "recipe-app-database.cf2uy9dcit2e.us-west-1.rds.amazonaws.com",
     user: "hcent",
     password: "BananaBlast118!",
     port: "3306",
     database: "recipe_app",
-});
+}); 
 
+//Establish connection
 connection.connect((err) => {
-    if (err) throw err;
-    else console.log("Connected!");
+  if (err) throw err;
+  else console.log("Connected!");
 });
 
-function resultGen(status, MSG) {
-    return {
-        statusCode: status,
-        body: JSON.stringify(MSG),
-    };
+function errorStatus(err, result, action){
+    if(err) console.log("Error", err)
+    else console.log(action);
 }
 
-function getAll() {
-    return new Promise(function (resolve, reject) {
-        connection.query(
-            `select * from Recipe`,
-            (err, result, fields) => {
-                if (err) {
-                    console.log("Error", err);
-                    reject(resultGen(204, "Recipe not found"));
-                }
-                resolve(resultGen(400, result));
+/*
+function contained(name, URL){
+    connnection.query(`select exists(select * from saved where name = ${name} and url = ${URL})`, 
+    (err, result) =>  { errorStatus(err, result, `failed to check for recipe ${name} with URL ${URL}`) })
+}
+*/
+
+function addRecipe(name, URL, UserID){
+    return new Promise(function(resolve, reject){
+        connection.query(`select exists(select * from Recipe where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
+        (err, result, fields) => { 
+            var res = result[0][fields[0].name]; //get the result from the SQL command
+            console.log(result);
+            console.log(res);
+           
+            if(err){ 
+                console.log("Error", err)
+                resolve(resultGen(204, 'Something went wrong'))
+                //wrong code probably    
             }
-        );
+            if(res){
+                console.log("Duplicate")
+                resolve(resultGen(204, 'Cannot add duplicates'))
+                //wrong code probably
+                
+            } //Duplicate exists
+            //Second API call made inside a callback function bc it depends on the result
+            else connection.query(`insert into Recipe (Name, URL, UserID) values("${name}", "${URL}", "${UserID}");`, 
+                (err, result) => { 
+                    resolve(resultGen(200, `added recipe ${name} with URL ${URL}`))
+                    console.log(`added recipe ${name} with URL ${URL} why am I here`) 
+                    //getRecipe()//get the latest and send it back 
+                })
+        })
     });
 }
 
-function addRecipe(name, URL, UserID) {
-    return new Promise(function (resolve, reject) {
-        connection.query(
-            `select exists(select * from Recipe where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
-            (err, result, fields) => {
-                var res = result[0][fields[0].name]; //get the result from the SQL command
-                console.log(result);
-                console.log(res);
-
-<<<<<<< Updated upstream
-                if (err) {
-                    console.log("Error", err);
-                    resolve(resultGen(204, "Something went wrong"));
-                    //wrong code probably
-                }
-                if (res) {
-                    console.log("Duplicate");
-                    resolve(resultGen(204, "Cannot add duplicates"));
-                } //Duplicate exists
-                //Second API call made inside a callback function bc it depends on the result
-                else
-                    connection.query(
-                        `insert into Recipe (Name, URL, UserID) values("${name}", "${URL}", "${UserID}");`,
-                        (error, result) => {
-                            if (error) {
-                                return reject(error);
-                            }
-                            resolve(
-                                resultGen(
-                                    200,
-                                    `added recipe ${name} with URL ${URL}`
-                                )
-                            );
-                            console.log(
-                                `added recipe ${name} with URL ${URL} why am I here`
-                            );
-                        }
-                    );
-            }
-        );
-    });
+//Might not be used
+function getRecipe(ID, UserID){
+    
+    connection.query(`select * from recipe where recipeid = ${ID} and userid = "${UserID}";`,
+    (err, result, fields) =>  { 
+        //console.log(result)
+        // console.log(fields)
+        var res = result[0]; //get the result from the SQL command
+        console.log(res);
+        if(err | !res){ 
+            console.log("Error", err)
+            console.log("Empty Result perhaps")
+            return resultGen(204, 'Recipe not found')
+        }
+        return resultGen(400, res)
+    })
 }
 
-async function deleteRecipe(ID) {
-    return new Promise(function (resolve, reject) {
-        connection.query(
-            `delete from Recipe where recipeid = ${ID};`,
-            (error, result, fields) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(result);
-            }
-        );
-    });
-=======
 //Updated This
 function getAll(UserID){
     return new Promise(function(resolve, reject){
@@ -127,7 +111,6 @@ function resultGen(status, MSG){
         statusCode: status,
         body: JSON.stringify(MSG),
     };
->>>>>>> Stashed changes
 }
 
-module.exports = { getAll, addRecipe, deleteRecipe };
+module.exports =  {addRecipe, deleteRecipe, getAll, getRecipe, resultGen};
