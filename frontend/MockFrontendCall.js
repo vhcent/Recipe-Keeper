@@ -2,8 +2,11 @@ const http = require('https') //import https moduke
 
 const options = {
     hostname: 'j9lw0ponza.execute-api.us-west-2.amazonaws.com',
-    path: '/test/endpoint/?id=17&userid=1',
-    method: 'GET',
+    path: '/test/recipes/?id=4',
+    method: 'PATCH',
+    body: {
+        notes: 'THESE ARE NOTES.',
+    }
   };
 
 /*
