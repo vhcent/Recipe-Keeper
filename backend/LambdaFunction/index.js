@@ -4,7 +4,6 @@ const Joi = require('joi') // returns a class
 const dbManager = require('./dbManager');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const e = require('express');
 
 exports.handler = async (event) => {
     console.log(event);
@@ -123,7 +122,7 @@ function deleteReq(req) {
     "userid": "1"
   }
 */
-//name: Brownies, url: dummies.org, userid: 1
+//name: Brownies, url: dummies.org, userid: 1, imageURL: https://spoonacular.com/recipeImages/636835-312x231.jpg
 function postReq(req) {
     /*
     const schema = Joi.object({
@@ -139,7 +138,7 @@ function postReq(req) {
     */
     let body = JSON.parse(req.body)
     console.log(body)
-    return dbManager.addRecipe(body.name, body.url, body.userid)
+    return dbManager.addRecipe(body.name, body.url, body.userid, body.imageURL)
 }
 
 function resultGen(status, MSG) {
