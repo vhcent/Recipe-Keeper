@@ -1,18 +1,27 @@
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
-export default function App() {
-    return (
-        <View style={styles.container}>
-            <Text>HELLO</Text>
-        </View>
-    );
-}
+import SearchRecipe from './Components/SearchRecipe';
+import Home from './Components/Home';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+    return (
+        <NavigationContainer>
+        <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+        name="SearchRecipe"
+        component={SearchRecipe}
+        options={{ title: 'Search for Recipe' }}
+        />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  };
+
+export default App;
+
