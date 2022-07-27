@@ -29,7 +29,7 @@ function resultGen(status, MSG) {
     };
 }
 
-function addRecipe(name, URL, UserID) {
+function addRecipe(name, URL, UserID, imageURL) {
     return new Promise(function (resolve, reject) {
         connection.query(`select exists(select * from Recipe where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
             (error, result, fields) => {
@@ -49,7 +49,7 @@ function addRecipe(name, URL, UserID) {
 
                 } //Duplicate exists
                 //Second API call made inside a callback function bc it depends on the result
-                else connection.query(`insert into Recipe (Name, URL, UserID) values("${name}", "${URL}", "${UserID}");`,
+                else connection.query(`insert into Recipe (Name, URL, UserID, Photo) values("${name}", "${URL}", "${UserID}", "${imageURL}");`,
                     (error, result) => {
                         resolve(resultGen(200, `added recipe ${name} with URL ${URL}`))
                         console.log(`added recipe ${name} with URL ${URL} why am I here`)

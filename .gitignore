@@ -23,6 +23,9 @@ lib-cov
 coverage
 *.lcov
 
+# Expo folder
+.expo/
+
 # nyc test coverage
 .nyc_output
 
