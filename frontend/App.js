@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
-import SearchRecipe from './Components/SearchRecipe';
-import Home from './Components/Home';
+import SearchRecipe from './components/SearchRecipe';
+import Home from './components/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
