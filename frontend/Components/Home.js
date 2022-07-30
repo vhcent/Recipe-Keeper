@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
+const s = require('./Styles');
+
 const Home = ({ navigation }) => {
     return (
-      <Button
-        title="Search for Recipe"
-        onPress={() =>
-          navigation.navigate('SearchRecipe', { name: 'Button' })
-        }
-      />
+      <View style={s.container}>
+        <Button 
+          title="Search for Recipe"
+          onPress={() =>
+            navigation.navigate('SearchRecipe', { name: 'Button' })
+          }
+        />
+      </View>
+      
     );
   };
 

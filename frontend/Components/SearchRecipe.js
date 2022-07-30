@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-import { styles } from './StyleSheet';
+const s = require('./Styles');
+
 
 const SearchRecipe = ({ navigation }) => {
   return (
@@ -10,7 +11,7 @@ const SearchRecipe = ({ navigation }) => {
     //     navigation.navigate('Home', { name: 'Button' })
     //   }
     // />
-    <View style={ styles.container }>
+    <View style={s.container}>
       <Text>
           "Search for Recipe"
       </Text>
