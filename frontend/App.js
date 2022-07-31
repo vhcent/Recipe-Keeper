@@ -13,7 +13,8 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{ headerStyle: { height:30 } }}
+      >
         <Tab.Screen
           name="Search"
           component={Search}
