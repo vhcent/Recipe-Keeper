@@ -1,20 +1,15 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
-import styles from "./Styles";
 
-//const styles = require("./Styles")
 
-const RecipeSearch = () => {
-    return (
-        <View style={styles.searchBar}>
-            <FontAwesome name="search" size={20} style={styles.icon} />
-            <TextInput
-                style={styles.text}
-                placeholder="Search by Recipe"
-            />
-        </View>
-    )
-}
-
-export default RecipeSearch;
+export async function searchRecipe(recipeName) {   // async function to search for recipes by name
+    let response = await fetch('https://api.spoonacular.com/recipes/complexSearch?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&query=' + recipeName, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    let json = await response.json();
+    console.log(json.results[0]);
+    return json.results;
+    // alert(json["result"][0].title);
+};

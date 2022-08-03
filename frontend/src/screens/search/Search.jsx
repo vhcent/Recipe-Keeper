@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-import RecipeSearch from "../../components/recipeSearch/RecipeSearch";
+import RecipeSearch from "../../components/recipeSearch/RecipeSearch.jsx";
 import styles from "./Styles";
 
 
