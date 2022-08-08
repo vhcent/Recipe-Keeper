@@ -9,7 +9,7 @@ export async function searchRecipe(recipeName) {   // async function to search f
         },
     });
     let json = await response.json();
-    console.log(json.results[0]);
+    console.log(json.results); //prints out all the recipes
     return json.results;
     // alert(json["result"][0].title);
 };
