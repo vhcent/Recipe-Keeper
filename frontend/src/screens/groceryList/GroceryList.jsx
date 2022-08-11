@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import Login from "../../components/login/Login.jsx";
 
 
 
@@ -15,6 +16,7 @@ const SearchRecipe = ({ navigation }) => {
       <Text>
           "Search for Recipe"
       </Text>
+      <Login/>
     </View>
   );
 };

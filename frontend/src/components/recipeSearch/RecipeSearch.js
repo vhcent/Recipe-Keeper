@@ -1,5 +1,3 @@
-
-
 export async function searchRecipe(recipeName) {   // async function to search for recipes by name
     let response = await fetch('https://api.spoonacular.com/recipes/complexSearch?apiKey=8d51cf1e41ad42fcb9c2699fbba2cfbd&query=' + recipeName, {
         method: 'GET',
