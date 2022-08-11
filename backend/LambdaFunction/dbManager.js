@@ -31,7 +31,7 @@ function resultGen(status, MSG) {
 
 function addRecipe(name, URL, UserID, imageURL) {
     return new Promise(function (resolve, reject) {
-        connection.query(`select exists(select * from Recipe where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
+        connection.query(`select exists(select * from Saved where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
             (error, result, fields) => {
                 var res = result[0][fields[0].name]; //get the result from the SQL command
                 console.log(result);
@@ -49,7 +49,7 @@ function addRecipe(name, URL, UserID, imageURL) {
 
                 } //Duplicate exists
                 //Second API call made inside a callback function bc it depends on the result
-                else connection.query(`insert into Recipe (Name, URL, UserID, Photo) values("${name}", "${URL}", "${UserID}", "${imageURL}");`,
+                else connection.query(`insert into Saved (Name, URL, UserID, Photo) values("${name}", "${URL}", "${UserID}", "${imageURL}");`,
                     (error, result) => {
                         resolve(resultGen(200, `added recipe ${name} with URL ${URL}`))
                         console.log(`added recipe ${name} with URL ${URL} why am I here`)
@@ -78,14 +78,14 @@ function updateRecipeNotes(recipeID, notes) {
 
 function updateRecipeName(recipeID, name) {
     return new Promise(function (resolve, reject) {
-        connection.query(`update Recipe set Name = "${name}" where recipeid = ${recipeID}`,
+        connection.query(`update Saved set Name = "${name}" where recipeid = ${recipeID}`,
             (error, result) => {
                 //result is an OkPacket bc its ok
                 if (error) {
                     console.log("Error", error)
                     resolve(resultGen(204, 'Error updating'))
                 }
-                console.log(`Updated Recipe Name ${name}" where recipeid = "${recipeID}"`)
+                console.log(`Updated Saved Name ${name}" where recipeid = "${recipeID}"`)
                 resolve(resultGen(200, `updated name of id ${recipeID} with ${name}`))
             })
     })
@@ -93,7 +93,7 @@ function updateRecipeName(recipeID, name) {
 
 function getAllRecipes(UserID) {
     return new Promise(function (resolve, reject) {
-        connection.query(`select * from Recipe where userid = "${UserID}";`,
+        connection.query(`select * from Saved where userid = "${UserID}";`,
             //connection.query(`show tables;`,
             (error, result, fields) => {
                 if (error) {
@@ -107,7 +107,7 @@ function getAllRecipes(UserID) {
 
 function deleteRecipe(ID, UserID) {
     return new Promise(function (resolve, reject) {
-        connection.query(`delete from Recipe where RecipeID = ${ID} and userid = "${UserID}";`,
+        connection.query(`delete from Saved where RecipeID = ${ID} and userid = "${UserID}";`,
             (error) => {
                 if (error) {
                     console.log("Error", error)
