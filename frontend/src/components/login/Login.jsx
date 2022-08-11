@@ -14,6 +14,30 @@ const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 const discovery = AuthSession.fetchDiscoveryAsync("https://dev-c5rtcjv8.us.auth0.com");
 
+function getAccessToken(){
+    
+    const [request, result, promptAsync] = AuthSession.useAuthRequest(
+        {
+            redirectUri,
+            clientId: auth0ClientId,
+            // id_token will return a JWT token
+            codeChallenge: '47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU',
+            //codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
+            responseType: "code",
+            usePKCE: false,
+            
+            // retrieve the user's profile
+            scopes: ["openid"],
+            extraParams: {
+              // ideally, this will be a random value
+              audience: "https://recipeauth",
+              //nonce: "nonce",
+            },
+          },
+          { authorizationEndpoint }
+    );
+}
+
 export default function Login() {
     
     console.log(`Redirect URL: ${redirectUri}`);
@@ -21,7 +45,7 @@ export default function Login() {
     const [name, setName] = useState(null);
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
-        redirectUri: "https://auth.expo.io/@jfu/auth0tests",
+        redirectUri,
         clientId: "Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc",
         // id_token will return a JWT token
         responseType: "id_token",
@@ -49,12 +73,17 @@ export default function Login() {
         return;
         }
         if (result.type === "success") {
-        // Retrieve the JWT token and decode it
-        const jwtToken = result.params.id_token;
-        const decoded = jwtDecode(jwtToken);
+            // Retrieve the JWT token and decode it
+            const jwtToken = result.params.id_token;
+            const decoded = jwtDecode(jwtToken);
 
-        const { name } = decoded;
-        setName(name);
+            console.log(decoded)
+
+            const { name } = decoded;
+            setName(name);
+
+            getAccessToken();
+
         }
     }
     }, [result]);
