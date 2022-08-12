@@ -8,34 +8,43 @@ import jwtDecode from "jwt-decode";
 var credentials = require('./auth0-configuration.js');
 const auth0 = new Auth0(credentials);
 const authorizationEndpoint = "https://dev-c5rtcjv8.us.auth0.com/authorize";
-
+const auth0ClientId = "Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc";
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 const discovery = AuthSession.fetchDiscoveryAsync("https://dev-c5rtcjv8.us.auth0.com");
 
-function getAccessToken(){
+async function getAccessToken(){
+    console.log("I'm here")
     
-    const [request, result, promptAsync] = AuthSession.useAuthRequest(
-        {
-            redirectUri,
-            clientId: auth0ClientId,
-            // id_token will return a JWT token
-            codeChallenge: '47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU',
-            //codeChallengeMethod: AuthSession.CodeChallengeMethod.S256,
-            responseType: "code",
-            usePKCE: false,
-            
-            // retrieve the user's profile
-            scopes: ["openid"],
-            extraParams: {
-              // ideally, this will be a random value
-              audience: "https://recipeauth",
-              //nonce: "nonce",
-            },
-          },
-          { authorizationEndpoint }
-    );
+    const authUrl = `https://dev-c5rtcjv8.us.auth0.com/authorize?response_type=code&client_id=${auth0ClientId}&redirect_uri=${redirectUri}&scope=openid&prompt=none`;
+    const response = await AuthSession.startAsync({authUrl})
+
+    console.log(response)
+
+    /*
+    let response = await fetch(`https://dev-c5rtcjv8.us.auth0.com/authorize?response_type=code&client_id=${auth0ClientId}&redirect_uri=${redirectUri}&scope=openid&prompt=none`, {
+            method: 'Get',
+        })
+    console.log(response.type)
+    console.log(response.text())
+    //console.log(response)
+    let json = await response.json()
+    console.log(json)
+*/
+
+    console.log("done w/ method")
+
+   // 
+
+/*
+    https://YOUR_DOMAIN/authorize?
+    response_type=code&
+    client_id=YOUR_CLIENT_ID&
+    redirect_uri=https://YOUR_APP/callback&
+    scope=openid&
+    state=abcdef
+*/
 }
 
 export default function Login() {
@@ -84,6 +93,7 @@ export default function Login() {
 
             getAccessToken();
 
+            console.log("got access token")
         }
     }
     }, [result]);
