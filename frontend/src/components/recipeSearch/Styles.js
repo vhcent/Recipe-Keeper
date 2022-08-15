@@ -2,12 +2,12 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     searchBar: {
-        marginTop: 50,
-        marginBottom: 20,
+        // marginTop: 50,
+        // marginBottom: 20,
         flexDirection: "row",
-        justifySelf:"center",
+        justifySelf: "center",
         alignItems: "center",
-        alignSelf: "top",
+        // alignSelf: "top",
         borderColor: "white",
         borderWidth: 1,
         paddingTop: 5,
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         paddingLeft: 10,
-        width : "90%",
+        width: "90%",
         color: "white",
-    }
-})
+    },
+});
 
 export default styles;

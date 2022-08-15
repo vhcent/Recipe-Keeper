@@ -1,20 +1,19 @@
-import React, { Component, useState }from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Alert  } from "react-native";
+import React, { Component, useState } from 'react';
+import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import styles from "./Styles";
-import {searchRecipe} from "./RecipeSearch.js"
+import { searchRecipe } from "./RecipeSearch.js"
 
-class RecipeSearch extends Component{
-    constructor(props){
+class RecipeSearch extends Component {
+    constructor(props) {
         super(props)
-    
+
         this.state = {
-          value: '',
+            value: '',
         }
     }
 
     handleSearch(value) {
-        console.log(value); 
         searchRecipe(value);
     }
 
@@ -22,14 +21,15 @@ class RecipeSearch extends Component{
         return (
             <View style={styles.searchBar}>
                 <TextInput
-                    id = "searchBar"
+                    id="searchBar"
                     style={styles.text}
                     placeholder="Search by Recipe"
-                    onChangeText={text => this.setState({value:text})}
+                    placeholderTextColor="#FFF"
+                    onChangeText={text => this.setState({ value: text })}
                     onEndEditing={() => this.handleSearch(this.state.value)}
                 />
                 <FontAwesome id="search-icon" name="search" size={20} style={styles.icon}
-                            onPress={() => this.handleSearch(this.state.value)}/>
+                    onPress={() => this.handleSearch(this.state.value)} />
             </View>
         )
     }
