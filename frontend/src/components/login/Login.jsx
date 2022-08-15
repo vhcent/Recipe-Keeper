@@ -14,8 +14,39 @@ const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 const discovery = AuthSession.fetchDiscoveryAsync("https://dev-c5rtcjv8.us.auth0.com");
 
+async function apiCall(formBody){
+    let response = await fetch('https://dev-c5rtcjv8.us.auth0.com/oauth/token', {
+      method: 'Post',
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
+      body: formBody
+    })
+  
+    let json = await response.json()
+    console.log(json);
+    console.log("Im here")
+    let bearerToken = json.access_token;
+    console.log(bearerToken)
+  
+    const jwtToken = json.id_token;
+    const decoded = jwtDecode(jwtToken);
+    console.log("the params")
+    console.log(decoded)
+
+    let APIresponse = await fetch('https://cmivyuanic.execute-api.us-west-2.amazonaws.com/tester/?all=true&id=1&userid=1', {
+      method: 'Get',
+      headers: {'Authorization': 'Bearer ' + bearerToken},
+    })
+  
+    let apiJSON = await APIresponse.json()
+    console.log(apiJSON);
+    console.log("Im here")
+  }
+
+
 async function getAccessToken(){
     console.log("I'm here")
+    
+
     
     const authUrl = `https://dev-c5rtcjv8.us.auth0.com/authorize?response_type=code&client_id=${auth0ClientId}&redirect_uri=${redirectUri}&scope=openid&prompt=none`;
     const response = await AuthSession.startAsync({authUrl})
@@ -35,16 +66,6 @@ async function getAccessToken(){
 
     console.log("done w/ method")
 
-   // 
-
-/*
-    https://YOUR_DOMAIN/authorize?
-    response_type=code&
-    client_id=YOUR_CLIENT_ID&
-    redirect_uri=https://YOUR_APP/callback&
-    scope=openid&
-    state=abcdef
-*/
 }
 
 export default function Login() {
@@ -55,14 +76,16 @@ export default function Login() {
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
         redirectUri,
-        clientId: "Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc",
+        clientId: auth0ClientId,
         // id_token will return a JWT token
-        responseType: "id_token",
+        codeChallenge: '47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU',
+        responseType: "code",
+        usePKCE: false,
         // retrieve the user's profile
-        scopes: ["openid", "profile"],
+        scopes: ["openid"],
         extraParams: {
         // ideally, this will be a random value
-        nonce: "nonce",
+            audience: "https://recipeauth",
         },
     },
     { authorizationEndpoint },
@@ -82,16 +105,36 @@ export default function Login() {
         return;
         }
         if (result.type === "success") {
+            console.log("Made it here")
             // Retrieve the JWT token and decode it
-            const jwtToken = result.params.id_token;
-            const decoded = jwtDecode(jwtToken);
+            
+            console.log(result)
+            console.log(result.params.code)
+            //const { name } = decoded;
+            //setName(name);
 
-            console.log(decoded)
-
-            const { name } = decoded;
-            setName(name);
-
-            getAccessToken();
+            //getAccessToken();
+            var details = {
+                grant_type: 'authorization_code',
+                client_id: 'Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc',
+                client_secret: 'TAKIDhnxFBNyLX89Qa1Tr-ILuwk0c_W-6oxzP7-gdGY9ERxSqCrqfS4i76UA06xJ',
+                code_verifier: 'gbGeKxPwOKT1tSFY0IOIe3dxzq98sgSY~UNO9dGO94ZgmN6Hoc1qTIkxo6F1f-2IIG8IyLuUmwLeW2IKSix-GdEbOwm85.gxk..4zUv5v81cm3nq3k_5QBZRgMurciUc', //should be irrelevant
+                code: result.params.code,
+                redirect_uri: 'https://auth.expo.io/@jfu/frontend'
+              };
+              
+              console.log("Im here")
+              
+              var formBody = [];
+              for (var property in details) {
+              var encodedKey = encodeURIComponent(property);
+              var encodedValue = encodeURIComponent(details[property]);
+              formBody.push(encodedKey + "=" + encodedValue);
+              }
+              formBody = formBody.join("&");
+              
+              console.log(formBody)
+            apiCall(formBody)              
 
             console.log("got access token")
         }
