@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import styles from "./Styles";
-import { searchRecipe } from "./RecipeSearch.js"
+import { searchRecipe } from "./RecipeSearch.js";
 
 class RecipeSearch extends Component {
     constructor(props) {
