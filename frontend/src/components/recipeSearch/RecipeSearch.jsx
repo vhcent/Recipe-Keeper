@@ -8,13 +8,21 @@ class RecipeSearch extends Component {
     constructor(props) {
         super(props)
 
+        // console.log("props", props.data)
+        // this.props.callBack("NewDATA")
+        // console.log(this.props.data)
+
         this.state = {
-            value: '',
+            data: this.props.data,
         }
     }
 
-    handleSearch(value) {
-        searchRecipe(value);
+    async handleSearch (value) {
+        json = await searchRecipe(value);
+        // this.setState({ json: json });
+        this.setState({data: json});
+        this.props.callBack(json);
+        console.log("json",json)
     }
 
     render() {
