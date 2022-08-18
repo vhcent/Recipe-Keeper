@@ -29,9 +29,9 @@ function resultGen(status, MSG) {
     };
 }
 
-function addRecipe(name, URL, UserID, imageURL) {
+function addRecipe(name, URL, userID, photo, recipeID) {
     return new Promise(function (resolve, reject) {
-        connection.query(`select exists(select * from Saved where name = "${name}" and url = "${URL}" and userid = "${UserID}");`,
+        connection.query(`select exists(select * from Saved where RecipeID = "${recipeID}" and UserID = "${userID}");`,
             (error, result, fields) => {
                 var res = result[0][fields[0].name]; //get the result from the SQL command
                 console.log(result);
@@ -49,9 +49,9 @@ function addRecipe(name, URL, UserID, imageURL) {
 
                 } //Duplicate exists
                 //Second API call made inside a callback function bc it depends on the result
-                else connection.query(`insert into Saved (Name, URL, UserID, Photo) values("${name}", "${URL}", "${UserID}", "${imageURL}");`,
+                else connection.query(`insert into Saved (Name, URL, UserID, Photo, RecipeID) values("${name}", "${URL}", "${UserID}", "${photo}", ${recipeID});`,
                     (error, result) => {
-                        resolve(resultGen(200, `added recipe ${name} with URL ${URL}`))
+                        resolve(resultGen(200, `added recipe ${name} with URL ${URL} and recipeID "${recipeID}"`))
                         console.log(`added recipe ${name} with URL ${URL} why am I here`)
                         //getRecipe()//get the latest and send it back 
                     })
@@ -61,32 +61,17 @@ function addRecipe(name, URL, UserID, imageURL) {
 
 //Need some update function to write notes to recipes
 //Can write notes, change the recipe name
-function updateRecipeNotes(recipeID, notes) {
+function updateRecipeNotes(ID, notes) {
     return new Promise(function (resolve, reject) {
-        connection.query(`update Recipe set Notes = "${notes}" where recipeid = ${recipeID}`,
-            (error, result) => {
+        connection.query(`update Saved set Notes = "${notes}" where ID = ${ID}`,
+            (error, result) => { 
                 // console.log(result);
                 if (error) {
                     console.log("Error", error)
                     resolve(resultGen(204, 'Error updating'))
                 }
-                console.log(`Updated Recipe Notes"${notes}" where recipeid = "${recipeID}"`)
-                resolve(resultGen(200, `updated notes of id ${recipeID} with ${notes}`))
-            })
-    })
-}
-
-function updateRecipeName(recipeID, name) {
-    return new Promise(function (resolve, reject) {
-        connection.query(`update Saved set Name = "${name}" where recipeid = ${recipeID}`,
-            (error, result) => {
-                //result is an OkPacket bc its ok
-                if (error) {
-                    console.log("Error", error)
-                    resolve(resultGen(204, 'Error updating'))
-                }
-                console.log(`Updated Saved Name ${name}" where recipeid = "${recipeID}"`)
-                resolve(resultGen(200, `updated name of id ${recipeID} with ${name}`))
+                console.log(`Updated Recipe Notes"${notes}" where id = "${ID}"`)
+                resolve(resultGen(200, `updated notes of id ${ID} with ${notes}`))
             })
     })
 }
@@ -105,9 +90,9 @@ function getAllRecipes(UserID) {
     });
 }
 
-function deleteRecipe(ID, UserID) {
-    return new Promise(function (resolve, reject) {
-        connection.query(`delete from Saved where RecipeID = ${ID} and userid = "${UserID}";`,
+function deleteRecipe(ID) {
+    return new Promise(function (resolve, reject) { 
+        connection.query(`delete from Saved where ID = ${ID};`,
             (error) => {
                 if (error) {
                     console.log("Error", error)
@@ -121,8 +106,28 @@ function deleteRecipe(ID, UserID) {
     });
 }
 
-function addUser(){}
+function checkDuplicates(userID, recipeIDList) {
+    let query = "";
+    for(int i = 0 ; i < recipeList.length - 1; i++){
+        query = query + recipeList[i] + ",";
+    }
+    query = query + recipeList[recipeList.length - 1];
+    console.log(query);
 
+   
+    return new Promise(function (resolve, reject) {
+        connection.query(`SELECT RecipeID FROM Saved WHERE RecipeID IN (${query}) AND UserID = "${UserID}";`, 
+            (error, result) => {
+                if (error) {
+                    console.log("Error", error)
+                    reject(error)
+                }
+                else { 
+                    console.log(` recipe with ID: ${ID}`)
+                    resolve(resultGen(400, result)); //tentative
+                }
+            })
+        });
+    }
 
-
-module.exports = { addRecipe, deleteRecipe, getAllRecipes, updateRecipeNotes, updateRecipeName, resultGen };
+module.exports = { addRecipe, deleteRecipe, getAllRecipes, updateRecipeNotes, updateRecipeName, checkDuplicates, resultGen };
