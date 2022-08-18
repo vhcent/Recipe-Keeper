@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 exports.handler = async (event) => {
+    //Object.getOwnPropertyNames(Joi)
     console.log(event);
     console.log(event.httpMethod);
     console.log(event.resource);

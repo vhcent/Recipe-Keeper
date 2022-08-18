@@ -2,11 +2,11 @@ const mysql = require('mysql');
 
 // Make connection to MySQL recipes database
 var connection = mysql.createConnection({
-    host: "recipe-app-database.cf2uy9dcit2e.us-west-1.rds.amazonaws.com",
-    user: "hcent",
-    password: "BananaBlast118!",
+    host: process.env.RDS_HOST_NAME,
+    user: process.env.RDS_USER,
+    password: process.env.RDS_PSWRD,
     port: "3306",
-    database: "recipe_app",
+    database: process.env.RDS_DB,
 });
 
 //Establish connection
@@ -29,6 +29,7 @@ function resultGen(status, MSG) {
     };
 }
 
+// Saved Table Functions
 function addRecipe(name, URL, userID, photo, recipeID) {
     return new Promise(function (resolve, reject) {
         connection.query(`select exists(select * from Saved where RecipeID = "${recipeID}" and UserID = "${userID}");`,
@@ -116,7 +117,7 @@ function checkDuplicates(userID, recipeIDList) {
 
    
     return new Promise(function (resolve, reject) {
-        connection.query(`SELECT RecipeID FROM Saved WHERE RecipeID IN (${query}) AND UserID = "${UserID}";`, 
+        connection.query(`SELECT RecipeID FROM Saved WHERE RecipeID IN (${query}) AND UserID = "${userID}";`, 
             (error, result) => {
                 if (error) {
                     console.log("Error", error)
@@ -129,5 +130,22 @@ function checkDuplicates(userID, recipeIDList) {
             })
         });
     }
+
+    // Grocery Table Functions
+    function getGrocery(userID) { function(resolve, reject) {
+        connection.query(`select Item from Grocery where UserID = "${userID}";`,
+        (error, result) => {
+            if (error) {
+                console.log("Error", error);
+                reject(error);
+            }
+            else { 
+                resolve(resultGen(400, result)); //tentative
+            }
+        })
+    }
+    }
+
+    function addGrocery(userID, )
 
 module.exports = { addRecipe, deleteRecipe, getAllRecipes, updateRecipeNotes, updateRecipeName, checkDuplicates, resultGen };
