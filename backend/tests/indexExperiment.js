@@ -1,7 +1,7 @@
 //all=true&id=notanumberlol&userid=1
 const Joi = require('joi') // returns a class
 //const express = require('express');
-const dbManager = require('./dbManager');
+const dbManager = require('../lambda-function/dbManager');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
