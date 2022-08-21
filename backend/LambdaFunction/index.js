@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     else if (event.resource == "/recent"){
         switch (event.httpMethod) {
             case 'POST':
-                return recentspostReq(event);
+                return recentsPostReq(event);
             case 'GET':
                 return recentsGetReq(event);
         }
@@ -49,6 +49,7 @@ exports.handler = async (event) => {
                 return checkSavedReq(event);
         }
     }
+    /*
     else {
         console.log("Invalid Resource Requested")
         switch (event.httpMethod) {
@@ -62,7 +63,7 @@ exports.handler = async (event) => {
                 return patchReq(event);
         }
     }
-
+*/
 
     /*
     if(event.httpMethod == 'POST'){
@@ -89,17 +90,13 @@ async function validateJOI(schema, input) {
     }
 }
 
-async function checkSavedReq(req) {
-    return checkDuplicates(userid, recipeidlist)
-}
-
 //recipeID and notes/name in the body
 async function recipePatchReq(req) {
     let body = JSON.parse(req.body);
     let parameters = req.queryStringParameters;
 
     if (body.notes) {
-        return dbManager.updateRecipeNotes(parameters.id, body.notes);
+        return dbManager.updateRecipeNotes(parameters.ID, body.notes);
     }
     else {
         return resultGen(204, "didn't specify proper patch")
@@ -109,10 +106,10 @@ async function recipePatchReq(req) {
 
  async function recipeGetReq(req) {
     let query = req.queryStringParameters;
-    console.log(`Get Recipes with userid ${query.userid}`);
+    console.log(`Get Recipes with userid ${query.userID}`);
     
     const schema = Joi.object({
-        userid: Joi.string().required()
+        userID: Joi.string().required()
     });
 
     let result = await validateJOI(schema, query)
@@ -121,15 +118,15 @@ async function recipePatchReq(req) {
         return resultGen(400, 'Invalid parameters for GET request')
     }
      
-    return dbManager.getAllRecipes(query.userid);
+    return dbManager.getAllRecipes(query.userID);
 }
 
 async function recipeDeleteReq(req) {
     let query = req.queryStringParameters
-     console.log(`Delete Recipes with params id ${query.id}`);
+     console.log(`Delete Recipes with params id ${query.ID}`);
     
     const schema = Joi.object({
-        id: Joi.number().positive().required(),
+        ID: Joi.number().positive().required(),
     });
 
     let result = await validateJOI(schema, query)
@@ -138,7 +135,7 @@ async function recipeDeleteReq(req) {
         return resultGen(400, "invalid parameters for delete request")
     }
 
-    return dbManager.deleteRecipe(query.id);
+    return dbManager.deleteRecipe(query.ID);
     //res.send('We done with get request')
 }
 
@@ -146,22 +143,114 @@ async function recipePostReq(req) {
     
     const schema = Joi.object({
         name: Joi.string().required(),
-        recipeid: Joi.number().positive().required(),
+        recipeID: Joi.number().positive().required(),
         url: Joi.string().min(3).required(),
         photo: Joi.string().required(),
-        userid: Joi.string().required(),
+        userID: Joi.string().required(),
     });
     
     let body = JSON.parse(req.body)
     console.log(body)
 
-    let result = await validateJOI(schema, query)
+    let result = await validateJOI(schema, body)
     if(!result){
         console.log("Returning 400 and Invalid params")
         return resultGen(400, "Invalid parameters for POST request")
     }
 
-    return dbManager.addRecipe(body.name, body.url, body.userid, body.photo, body.recipeid)
+    return dbManager.addRecipe(body.name, body.url, body.userID, body.photo, body.recipeID)
+}
+
+async function groceryPostReq(req){
+
+    const schema = Joi.object({
+        item: Joi.string().required(),
+        userID: Joi.string().required(),
+    });
+    
+    let body = JSON.parse(req.body)
+    console.log(body)
+
+    let result = await validateJOI(schema, body)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, "Invalid parameters for POST request")
+    }
+
+    return dbManager.addGrocery(body.userID, body.item)    
+}
+
+async function groceryGetReq(req){
+    let query = req.queryStringParameters;
+    console.log(`Get Recipes with userid ${query.userID}`);
+    
+    const schema = Joi.object({
+        userID: Joi.string().required()
+    });
+
+    let result = await validateJOI(schema, query)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, 'Invalid parameters for GET request')
+    }
+     
+    return dbManager.getGrocery(query.userID);
+}
+
+async function groceryDeleteReq(req){
+    let query = req.queryStringParameters
+     console.log(`Delete Grocery with params id ${query.id}`);
+    
+    const schema = Joi.object({
+        ID: Joi.number().positive().required(),
+    });
+
+    let result = await validateJOI(schema, query)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, "invalid parameters for delete request")
+    }
+
+    return dbManager.deleteGrocery(query.ID);
+}
+
+async function recentsPostReq(req){
+    
+    const schema = Joi.object({
+        name: Joi.string().required(),
+        recipeID: Joi.number().positive().required(),
+        url: Joi.string().min(3).required(),
+        photo: Joi.string().required(),
+        userID: Joi.string().required(),
+    });
+    
+    let body = JSON.parse(req.body)
+    console.log(body)
+
+    let result = await validateJOI(schema, body)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, "Invalid parameters for POST request")
+    }
+
+    return dbManager.updateRecent(body.name, body.url, body.userID, body.photo, body.recipeID)
+}
+
+async function recentsGetReq(req){
+    let query = req.queryStringParameters;
+    console.log(`Get Recipes with userid ${query.userID}`);
+    
+    const schema = Joi.object({
+        userID: Joi.string().required()
+    });
+
+    let result = await validateJOI(schema, query)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, 'Invalid parameters for GET request')
+    }
+     
+    return dbManager.getRecent(query.userID);
 }
 
 function resultGen(status, MSG) {
@@ -169,6 +258,22 @@ function resultGen(status, MSG) {
         statusCode: status,
         body: JSON.stringify(MSG),
     };
+}
+
+async function checkSavedReq(req) {
+    // recipeidlist will be a comma separated list in query string parameters -> turn into actual list
+    let query = req.queryStringParameters;
+    const schema = Joi.object({
+        userID: Joi.string().required(),
+        IDs: Joi.string().required(),
+    });
+    let result = await validateJOI(schema, query)
+    if(!result){
+        console.log("Returning 400 and Invalid params")
+        return resultGen(400, 'Invalid parameters for GET request')
+    }
+
+    return dbManager.checkDuplicates(query.userID, query.IDs);
 }
 
 /*
