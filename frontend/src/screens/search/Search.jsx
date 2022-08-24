@@ -22,7 +22,7 @@ const Search = ({ navigation }) => {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <RecipeSearch data="dataTesting" callBack={setRecipeData} />
-                <RecipeDisplay data={recipeData} />
+                <RecipeDisplay data={recipeData} navigation={navigation} />
             </ScrollView>
         </View>
     );

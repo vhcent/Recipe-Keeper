@@ -40,9 +40,9 @@ const App = () => {
                         screenOptions={{
                             headerStyle: { height: 0 },
                             tabBarStyle: {
-                                height: 70,
+                                height: "14%",
                                 backgroundColor: "#434343",
-                                paddingBottom: "2%",
+                                paddingBottom: "10%",
                                 // flexDirection: "column",
                                 // justifyContent: "center",
                                 // alignItems: "center",
