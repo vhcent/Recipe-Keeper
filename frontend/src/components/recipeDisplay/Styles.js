@@ -1,16 +1,15 @@
 import { StyleSheet } from "react-native";
 
-
 const styles = StyleSheet.create({
     recipeDisplay: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-around",
+        justifyContent: "center",
     },
 
     recipeBlock: {
-        width: "40%",
-        margin: 10,
+        width: "45%",
+        margin: 5,
     },
 
     recipeTitle: {
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        width: 160,
-        height: 160,
+        width: 170,
+        height: 150,
         borderRadius: 10,
     },
 
@@ -35,18 +34,18 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: "30%",
     },
-    
-    modalText : {
+
+    modalText: {
         fontSize: 20,
         fontWeight: "bold",
         textAlign: "center",
         margin: 10,
     },
 
-    icon : {
+    icon: {
         fontSize: 30,
         marginLeft: "auto",
-    }
+    },
 });
 
 export default styles;

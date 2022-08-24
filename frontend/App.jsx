@@ -40,12 +40,9 @@ const App = () => {
                         screenOptions={{
                             headerStyle: { height: 0 },
                             tabBarStyle: {
-                                height: "14%",
+                                height: "9%",
                                 backgroundColor: "#434343",
-                                paddingBottom: "10%",
-                                // flexDirection: "column",
-                                // justifyContent: "center",
-                                // alignItems: "center",
+                                paddingBottom: "2%",
                             },
                             tabBarActiveBackgroundColor:
                                 styles.navbar.backgroundColor,
