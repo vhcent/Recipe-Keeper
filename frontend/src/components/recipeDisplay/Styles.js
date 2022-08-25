@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     },
 
     recipeTitle: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: "bold",
-        textAlign: "center",
+        // textAlign: "center",
         color: "white",
     },
 
@@ -27,12 +27,30 @@ const styles = StyleSheet.create({
 
     modalContainer: {
         width: "90%",
-        height: "70%",
-        backgroundColor: "white",
+        height: "100%",
+        backgroundColor: "rgba(33, 30, 32, 0.5)",
         borderRadius: 10,
         // alignItems: "center",
         alignSelf: "center",
-        marginTop: "30%",
+        // justifySelf: "center",
+        // marginTop: "30%",
+    },
+
+    modalBlurView: {
+        blurRadius: 10,
+    },
+
+    modalScrollView: {
+        width: "90%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        borderColor: "red",
+        // alignItems: "center",
+        alignSelf: "center",
+        justifySelf: "center",
+        minHeight: "80%",
+        maxHeight: "80%",
+        marginTop: "18%",
     },
 
     modalText: {
@@ -45,6 +63,15 @@ const styles = StyleSheet.create({
     icon: {
         fontSize: 30,
         marginLeft: "auto",
+        padding: 10,
+    },
+
+    heart: {
+        position: "absolute",
+        right: 0,
+        bottom: 0,
+        padding: "5%",
+        paddingBottom: "2%",
     },
 });
 

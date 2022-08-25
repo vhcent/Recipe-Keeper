@@ -14,6 +14,8 @@ import {
     Image,
     ScrollView,
 } from "react-native";
+import { BlurView } from "@react-native-community/blur";
+
 import { AntDesign } from "@expo/vector-icons";
 import { showModal } from "./RecipeDisplay.js";
 
@@ -58,10 +60,10 @@ export default function RecipeDisplay({ data, navigation }) {
     }
 
     // for accessing recipe data locally when already accessed before
-    const [cache, setCache] = useState({});
-    useEffect(() => {
-        setCache({});
-    }, [recipeData]);
+    // const [cache, setCache] = useState({});
+    // useEffect(() => {
+    //     setCache({});
+    // }, [recipeData]);
 
     return (
         <View>
@@ -71,28 +73,33 @@ export default function RecipeDisplay({ data, navigation }) {
                     return (
                         <View style={styles.recipeBlock} key={key}>
                             <Text style={styles.recipeTitle}>
-                                {element.title.length <= 17
+                                {element.title.length <= 19
                                     ? element.title
-                                    : element.title.slice(0, 14) + "..."}
+                                    : element.title.slice(0, 19) + "..."}
                             </Text>
                             <TouchableHighlight
                                 onPress={() => {
                                     showModal(element.id);
                                 }}
                             >
-                                <Image
-                                    style={styles.image}
-                                    source={{
-                                        uri: element.image,
-                                    }}
+                                <View>
+                                    <Image
+                                        style={styles.image}
+                                        source={{
+                                            uri: element.image,
+                                        }}
+                                    />
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight>
+                                <AntDesign
+                                    id="heart-icon"
+                                    name="heart"
+                                    style={styles.heart}
+                                    size={35}
+                                    color={"red"}
                                 />
                             </TouchableHighlight>
-                            <AntDesign
-                                id="heart-icon"
-                                name="heart"
-                                // size={size}
-                                // color={color}
-                            />
                         </View>
                     );
                 })}
@@ -102,8 +109,11 @@ export default function RecipeDisplay({ data, navigation }) {
                     animationType="slide"
                     transparent={true}
                     visible={modalVisible}
+                    // presentationStyle="formSheet"
+                    style={styles.modalContainer}
                 >
-                    <ScrollView style={styles.modalContainer}>
+                    {/* <BlurView style={styles.modalBlurView}> */}
+                    <ScrollView style={styles.modalScrollView}>
                         {/* <Button title="Return" onPress={() => setModalVisible(false)}> */}
                         <AntDesign
                             id="close"
@@ -120,6 +130,7 @@ export default function RecipeDisplay({ data, navigation }) {
                         /> */}
                         {/* <Text style={styles.modalText}>{modalData.title}</Text> */}
                     </ScrollView>
+                    {/* </BlurView> */}
                 </Modal>
 
                 {/* <Text>{recipeData.data}</Text> */}
