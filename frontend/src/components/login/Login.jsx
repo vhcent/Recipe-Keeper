@@ -3,8 +3,14 @@ import { StyleSheet, Text, View, Button, TextInput, Alert  } from "react-native"
 import styles from "./Styles";
 import Auth0 from 'react-native-auth0';
 import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+//import CookieManager from '@react-native-cookies/cookies'
+//import RCTNetworking from 'RCTNetworking';
+var RCTNetworking = require('react-native/Libraries/Network/RCTNetworking');
+//import Cookies from 'universal-cookie';
+
 
 var credentials = require('./auth0-configuration.js');
 const auth0 = new Auth0(credentials);
@@ -36,7 +42,7 @@ async function storeItem(itemName, value){
     try {
       await AsyncStorage.setItem(itemName, value)
     } catch (e) {
-      console.err("Unable to store item")
+      console.log("Unable to store item")
     }
   }
 
@@ -78,9 +84,63 @@ async function oauthFlow(formBody){
 
 export default function Login() {
     
+  //logout does not work because cookies are stored in the browser, cannot clear cookies because the default cookie package
+  //is not supported for expo specifically, and alternative rctnetworking does not work either because this package is not
+  //downloaded
+  async function logout(){
+    setLoggedIn(null);
+/*
+    var details = {
+      redirectUri,
+        clientId: auth0ClientId,
+        responseType: "code", //Get a code to call the oauth/token endpoint
+        usePKCE: false,
+        scopes: ["openid"]
+  };       
+  var formBody = [];
+  for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+  let returnTo = "https://dev-c5rtcjv8.us.auth0.com/authorize?"+formBody;
+
+    await WebBrowser.openBrowserAsync(`https://dev-c5rtcjv8.us.auth0.com/v2/logout?client_id=Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc&returnTo=${returnTo}`);
+ */
+ 
+    /* CookieManager.clearAll(true).then((succcess) => {
+      console.log('CookieManager.clearAll from webkit-view =>', succcess);
+    });
+    */
+
+    //RCTNetworking.clearCookies();
+
+    await WebBrowser.openBrowserAsync(`https://dev-c5rtcjv8.us.auth0.com/v2/logout?client_id=Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc&`);
+
+    RCTNetworking.clearCookies((cleared) => {
+      console.log(cleared);
+      //this.setStatus('Cookies cleared, had cookies=' + cleared);
+  });
+
+    /*
+    const cookies = new Cookies();
+    console.log(cookies.getAll())
+    */
+
+    /*Auth0.webAuth.clearSession().then(res => {
+      console.log("clear session ok");
+    })
+    .catch(err => {
+      console.log("error clearing session: ", err);
+    });*/
+    
+    console.log("I'm here");
+  }
+
     console.log(`Redirect URL: ${redirectUri}`); //print redirect URL, used for getting the URL to register with auth0
 
-    const [name, setName] = useState(null); //no more need for name since login occurs without it
+    const [loggedIn, setLoggedIn] = useState(null); //no more need for name since login occurs without it
     let authorizationEndpoint = `${auth0Domain}/authorize`;
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -106,6 +166,7 @@ export default function Login() {
         return;
         }
         if (result.type === "success") {
+            setLoggedIn(true);
             console.log("Authentication code result: ")
             console.log(result)
             console.log("Authentication code: " + result.params.code)
@@ -130,13 +191,19 @@ export default function Login() {
         }
     }
     }, [result]);
-
+    //WebBrowser.openAuthSessionAsync
     return (
     <View style={styles.container}>
-        {name ? (
+        {loggedIn ? (
         <>
-            <Text style={styles.title}>You are logged in, {name}!</Text>
-            <Button title="Log out" onPress={() => setName(null)} />
+            <Text style={styles.title}>You are logged in!</Text>
+            <Button title="Log out" onPress={
+              /*() => {
+              setLoggedIn(null);
+              console.log("I'm here");
+              
+            }*/
+            logout} />
         </>
         ) : (
         <Button
