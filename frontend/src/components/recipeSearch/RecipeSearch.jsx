@@ -1,12 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 import styles from "./Styles";
-import { searchRecipe } from "./RecipeSearch.js";
+import { searchRecipe, getDetails } from "./RecipeSearch.js";
 
 class RecipeSearch extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         // console.log("props", props.data)
         // this.props.callBack("NewDATA")
@@ -14,15 +14,20 @@ class RecipeSearch extends Component {
 
         this.state = {
             data: this.props.data,
-        }
+        };
     }
 
-    async handleSearch (value) {
-        json = await searchRecipe(value);
-        // this.setState({ json: json });
-        this.setState({data: json});
-        this.props.callBack(json);
-        console.log("json",json)
+    async handleSearch(value) {
+        // Search for recipe and store it in state
+        let recipes = await searchRecipe(value);
+        // this.setState({ recipes: recipes });
+        this.setState({ data: recipes });
+        this.props.setRecipes(recipes);
+        // console.log("recipes", recipes);
+
+        // Get recipe details and store it in state
+        let details = await getDetails(recipes);
+        this.props.setDetails(details);
     }
 
     render() {
@@ -33,13 +38,18 @@ class RecipeSearch extends Component {
                     style={styles.text}
                     placeholder="Search by Recipe"
                     placeholderTextColor="#FFF"
-                    onChangeText={text => this.setState({ value: text })}
+                    onChangeText={(text) => this.setState({ value: text })}
                     onEndEditing={() => this.handleSearch(this.state.value)}
                 />
-                <FontAwesome id="search-icon" name="search" size={20} style={styles.icon}
-                    onPress={() => this.handleSearch(this.state.value)} />
+                <FontAwesome
+                    id="search-icon"
+                    name="search"
+                    size={20}
+                    style={styles.icon}
+                    onPress={() => this.handleSearch(this.state.value)}
+                />
             </View>
-        )
+        );
     }
 }
 /*

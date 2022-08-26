@@ -13,16 +13,21 @@ import styles from "./Styles";
 
 const Search = ({ navigation }) => {
     const [recipeData, setRecipeData] = useState([]);
-
-    useEffect(() => {
-        // console.log("Super duper test:", recipeData);
-    });
+    const [recipeDetails, setRecipeDetails] = useState([]);
 
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <RecipeSearch data="dataTesting" callBack={setRecipeData} />
-                <RecipeDisplay data={recipeData} navigation={navigation} />
+                <RecipeSearch
+                    data="dataTesting"
+                    setRecipes={setRecipeData}
+                    setDetails={setRecipeDetails}
+                />
+                <RecipeDisplay
+                    data={recipeData}
+                    details={recipeDetails}
+                    navigation={navigation}
+                />
             </ScrollView>
         </View>
     );

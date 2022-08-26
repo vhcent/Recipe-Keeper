@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Styles";
 import { Touchable, TouchableHighlight, Modal } from "react-native";
-import { getRecipeDetails, getDuplicateList } from "./RecipeDisplay.js";
+import { getDetails, getDuplicates } from "./RecipeDisplay.js";
 import {
     StyleSheet,
     Text,
@@ -19,51 +19,43 @@ import { BlurView } from "@react-native-community/blur";
 import { AntDesign } from "@expo/vector-icons";
 import { showModal } from "./RecipeDisplay.js";
 
-export default function RecipeDisplay({ data, navigation }) {
+export default function RecipeDisplay({ data }) {
     const [recipeData, setRecipeData] = useState(data);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalData, setModalData] = useState({});
+    const [cache, setCache] = useState({});
     // const [savedList, setSavedList] = useState("");
 
     useEffect(() => {
         setRecipeData(data);
         let recipeIDString = "";
         for (let i = 0; i < data.length; i++) {
-            console.log(data[i].id);
+            // console.log(data[i].id);
             if (i == 0) recipeIDString += data[i].id.toString();
             else recipeIDString += "," + data[i].id.toString();
         }
-        console.log("SDL:KFJ", recipeIDString);
-        // getDuplicateList(1, recipeIDString);
+        // console.log("SDL:KFJ", recipeIDString);
+        // getDuplicates(1, recipeIDString);
     }, [data]);
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalData, setModalData] = useState({
-        title: "el title",
-        image: "",
-        ingredients: "el ingredients",
-        instructions: "el instructions",
-    });
+    // for accessing recipe data locally when already accessed before
+    useEffect(() => {
+        setCache({});
+    }, [recipeData]);
 
     async function showModal(id) {
         console.log("modal visible");
-        setModalVisible(true);
         if (cache.hasOwnProperty(id)) {
-            modalData[title] = cache[id][title];
-            modalData[image] = cache[id][image];
-            modalData[ingredients] = cache[id][ingredients];
-            modalData[directions] = cache[id][directions];
-            modalData[isSaved] = cache[id][isSaved];
+            setModalData(cache[id]);
         } else {
-            // let data = await getRecipeDetails(id);
-            // cache[id] = data;
-            // setModalData(data);
+            let curr = cache;
+            let details = await getRecipeDetails(id);
+            setModalData(details);
+            curr[id] = details;
+            setCache(curr);
         }
+        setModalVisible(true);
     }
-
-    // for accessing recipe data locally when already accessed before
-    // const [cache, setCache] = useState({});
-    // useEffect(() => {
-    //     setCache({});
-    // }, [recipeData]);
 
     return (
         <View>
