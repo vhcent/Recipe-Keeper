@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Styles";
-import { Touchable, TouchableHighlight, Modal } from "react-native";
 import { getDetails, getDuplicates } from "./RecipeDisplay.js";
 import {
     StyleSheet,
@@ -13,6 +12,9 @@ import {
     Dimensions,
     Image,
     ScrollView,
+    Touchable,
+    TouchableHighlight,
+    Modal,
 } from "react-native";
 import { BlurView } from "@react-native-community/blur";
 
@@ -28,6 +30,7 @@ export default function RecipeDisplay({ data }) {
 
     useEffect(() => {
         setRecipeData(data);
+        setCache({});
         let recipeIDString = "";
         for (let i = 0; i < data.length; i++) {
             // console.log(data[i].id);
@@ -38,19 +41,14 @@ export default function RecipeDisplay({ data }) {
         // getDuplicates(1, recipeIDString);
     }, [data]);
 
-    // for accessing recipe data locally when already accessed before
-    useEffect(() => {
-        setCache({});
-    }, [recipeData]);
-
     async function showModal(id) {
-        console.log("modal visible");
         if (cache.hasOwnProperty(id)) {
             setModalData(cache[id]);
         } else {
             let curr = cache;
-            let details = await getRecipeDetails(id);
+            let details = await getDetails(id);
             setModalData(details);
+            console.log(modalData.extendedIngredients);
             curr[id] = details;
             setCache(curr);
         }
@@ -96,38 +94,40 @@ export default function RecipeDisplay({ data }) {
                     );
                 })}
             </View>
-            <View>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    // presentationStyle="formSheet"
-                    style={styles.modalContainer}
-                >
-                    {/* <BlurView style={styles.modalBlurView}> */}
-                    <ScrollView style={styles.modalScrollView}>
-                        {/* <Button title="Return" onPress={() => setModalVisible(false)}> */}
-                        <AntDesign
-                            id="close"
-                            name="close"
-                            size={20}
-                            style={styles.icon}
-                            onPress={() => setModalVisible(false)}
-                        />
-                        {/* <Image
-                            style={styles.image}
-                            source={{
-                                uri: modalData.image,
-                            }}
-                        /> */}
-                        {/* <Text style={styles.modalText}>{modalData.title}</Text> */}
-                    </ScrollView>
-                    {/* </BlurView> */}
-                </Modal>
-
-                {/* <Text>{recipeData.data}</Text> */}
-                {/* <Text>Hello</Text> */}
-            </View>
+            {/* <View> */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                style={styles.modalContainer}
+            >
+                <ScrollView style={styles.modalScrollView}>
+                    <AntDesign
+                        id="close"
+                        name="close"
+                        size={20}
+                        style={styles.icon}
+                        onPress={() => setModalVisible(false)}
+                    />
+                    <Text>{modalData.title}</Text>
+                    <Image
+                        style={styles.image}
+                        source={{
+                            uri: modalData.image,
+                        }}
+                    />
+                    {/* <Text>
+                        {modalData.cuisines.map((element, key) => {
+                            return (
+                                <View>
+                                    <Text>{element.title}</Text>
+                                </View>
+                            );
+                        })}
+                    </Text> */}
+                </ScrollView>
+            </Modal>
+            {/* </View> */}
         </View>
     );
 }

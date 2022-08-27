@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import styles from "./Styles";
-import { searchRecipe, getDetails } from "./RecipeSearch.js";
+import { searchRecipe } from "./RecipeSearch.js";
 
 class RecipeSearch extends Component {
     constructor(props) {
@@ -24,10 +24,6 @@ class RecipeSearch extends Component {
         this.setState({ data: recipes });
         this.props.setRecipes(recipes);
         // console.log("recipes", recipes);
-
-        // Get recipe details and store it in state
-        let details = await getDetails(recipes);
-        this.props.setDetails(details);
     }
 
     render() {

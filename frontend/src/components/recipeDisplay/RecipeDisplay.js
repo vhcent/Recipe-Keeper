@@ -1,7 +1,7 @@
 import { SPOONACULAR_KEY } from "@env";
 
 export async function getDetails(id) {
-    console.log("ID:", id);
+    console.log(id);
     let response = await fetch(
         "https://api.spoonacular.com/recipes/" +
             id +
@@ -16,8 +16,8 @@ export async function getDetails(id) {
         }
     );
     let json = await response.json();
-    console.log("Recipe Details:", json); //prints out all the recipe details
-    return json.results;
+    // console.log("Recipe Details:", json); //prints out all the recipe details
+    return json;
 }
 
 export async function getDuplicates(userID, recipeIDString) {
