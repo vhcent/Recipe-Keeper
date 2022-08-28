@@ -17,9 +17,9 @@ import {
     Modal,
 } from "react-native";
 import { BlurView } from "@react-native-community/blur";
-
 import { AntDesign } from "@expo/vector-icons";
 import { showModal } from "./RecipeDisplay.js";
+import Popup from "../popup/Popup.jsx";
 
 export default function RecipeDisplay({ data }) {
     const [recipeData, setRecipeData] = useState(data);
@@ -94,40 +94,13 @@ export default function RecipeDisplay({ data }) {
                     );
                 })}
             </View>
-            {/* <View> */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                style={styles.modalContainer}
-            >
-                <ScrollView style={styles.modalScrollView}>
-                    <AntDesign
-                        id="close"
-                        name="close"
-                        size={20}
-                        style={styles.icon}
-                        onPress={() => setModalVisible(false)}
-                    />
-                    <Text>{modalData.title}</Text>
-                    <Image
-                        style={styles.image}
-                        source={{
-                            uri: modalData.image,
-                        }}
-                    />
-                    {/* <Text>
-                        {modalData.cuisines.map((element, key) => {
-                            return (
-                                <View>
-                                    <Text>{element.title}</Text>
-                                </View>
-                            );
-                        })}
-                    </Text> */}
-                </ScrollView>
-            </Modal>
-            {/* </View> */}
+            {modalVisible ? (
+                <Popup
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    modalData={modalData}
+                />
+            ) : null}
         </View>
     );
 }
