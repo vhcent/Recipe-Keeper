@@ -1,48 +1,24 @@
 
 import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as StorageUtils from "../../components/StorageUtils.js";
 
-
-const SearchRecipe = ({ navigation }) => {
-
-async function generateListView(list){
-  let result = [];
-  for(let i = 0 ; i < list.length ; i++){
-    result.push(<Text style={{marginBottom: String(200 - (i*15)), fontSize: 15}}> {recipeList[String(i)].Name} </Text>)
-  }
-  console.log(result);
-  return result;
-}  
-
-async function getStorageItem(itemName) {
-  try {
-    const value = await AsyncStorage.getItem(itemName)
-    if(value !== null) {
-      return value;
-    }
-    else return null;
-  } catch(e) {
-      console.log("Unable to retrieve item ", itemName)
-      return null;
-    // error reading value
-  }
+/*
+const [loggedIn, setLoggedIn] = useState(null);
+*/
+/*
+export function setLogin(status){
+  setLoggedIn(status)
 }
-
-async function storeItem(itemName, value){
-  try {
-    await AsyncStorage.setItem(itemName, value)
-  } catch (e) {
-    console.err("Unable to store item")
-  }
-}
+*/
+const SearchRecipe = ({navigation}) => {
 
 async function apiCall(){
 
-  let userID = await getStorageItem('@user_id')
+  let userID = await StorageUtils.getStorageItem('@user_id')
   console.log(userID)
 
-  let bearerToken = await getStorageItem('@bearer_token')
+  let bearerToken = await StorageUtils.getStorageItem('@bearer_token')
   console.log(userID)
 
   //Optional tester API Call
@@ -59,11 +35,22 @@ async function apiCall(){
 }
 
   const [recipeList, setRecipeList] = React.useState(null);
-
+  const [loggedIn, setLoggedIn] = useState(null);
   //console.log("On the saved screen");
  // apiCall();
 
+  async function syncWithAsync(){
+    /*
+    if(await StorageUtils.getStorageItem('@user_id')){
+      setLoggedIn(true);
+    }
+    else setLoggedIn(null);
+    */
+  }
+
+
   useEffect(() => {
+    syncWithAsync()
     //console.log("On the saved screen");
     //apiCall();
   });
@@ -71,8 +58,16 @@ async function apiCall(){
   
 
   return (
-    
     <View>
+      { loggedIn  ? (
+        <>
+            <Text>You are logged in!</Text>
+        </>
+        ) : (
+          <>
+          <Text>You are not logged in :/</Text>
+          </>
+        )}
       <Image
         source={{
            uri: 'https://reactnative.dev/img/tiny_logo.png',

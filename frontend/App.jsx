@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -25,6 +25,7 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
     // const windowHeight = useWindowDimensions().height;
+    const [loggedIn, setLoggedIn] = useState(false);
 
     return (
         <View style={{ backgroundColor: "#3A3A3A" }}>

@@ -24,15 +24,20 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 const discovery = AuthSession.fetchDiscoveryAsync(auth0Domain);
 
 async function getStorageItem(itemName) {
+  console.log("Getting it ");
     try {
       const value = await AsyncStorage.getItem(itemName)
+      console.log(value)
       if(value !== null) {
         return value;
       }
-      else return null;
+      else{
+        console.log("returning false");
+        return false;
+      } 
     } catch(e) {
         console.log("Unable to retrieve item ", itemName)
-        return null; 
+        return false; 
     }
   }
 
@@ -91,7 +96,7 @@ export default function Login() {
   async function logout(){
     await WebBrowser.openBrowserAsync(`https://dev-c5rtcjv8.us.auth0.com/v2/logout?client_id=Q1Wkc36By8FxPi2xjIQxXHyx0ldquhEc&`);
     RCTNetworking.clearCookies((cleared) => {
-      console.log(cleared);
+      console.log("Cleared cookies status " + cleared);
         //this.setStatus('Cookies cleared, had cookies=' + cleared);
     });
     setLoggedIn(null);
@@ -147,7 +152,7 @@ export default function Login() {
     //WebBrowser.openAuthSessionAsync
     return (
     <View style={styles.container}>
-        {loggedIn ? (
+      { loggedIn  ? (
         <>
             <Text style={styles.title}>You are logged in!</Text>
             <Button title="Log out" onPress={logout} />
@@ -162,3 +167,16 @@ export default function Login() {
     </View>
     );
 }
+/*
+{loggedIn ? (
+        <>
+            <Text style={styles.title}>You are logged in!</Text>
+            <Button title="Log out" onPress={logout} />
+        </>
+        ) : (
+        <Button
+            disabled={!request}
+            title="Log in with Auth0"
+            onPress={() => promptAsync({ useProxy })}
+        />
+        )}*/

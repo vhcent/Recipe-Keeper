@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import Auth from "../../components/auth/Auth.jsx";
 
-
-
-const SearchRecipe = ({ navigation }) => {
+const Grocery = ( {navigation} ) => {
   return (
     // <Button
     //   title="Home Page"
@@ -21,5 +19,5 @@ const SearchRecipe = ({ navigation }) => {
   );
 };
 
-export default SearchRecipe;
+export default Grocery;
 
