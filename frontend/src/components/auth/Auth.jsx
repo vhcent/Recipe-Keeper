@@ -26,7 +26,6 @@ const discovery = AuthSession.fetchDiscoveryAsync(auth0Domain);
 async function getStorageItem(itemName) {
   console.log("Getting it ");
     try {
-<<<<<<< HEAD
       const value = await AsyncStorage.getItem(itemName)
       console.log(value)
       if(value !== null) {
@@ -41,21 +40,6 @@ async function getStorageItem(itemName) {
         return false; 
     }
   }
-
-async function storeItem(itemName, value){
-    try {
-      await AsyncStorage.setItem(itemName, value)
-=======
-        const value = await AsyncStorage.getItem(itemName);
-        if (value !== null) {
-            return value;
-        } else return null;
->>>>>>> c7aaa96bd6007522b11053d9fe87e391b5705be2
-    } catch (e) {
-        console.log("Unable to retrieve item ", itemName);
-        return null;
-    }
-}
 
 async function storeItem(itemName, value) {
     try {
@@ -103,8 +87,7 @@ async function oauthFlow(details) {
 }
 
 export default function Login() {
-<<<<<<< HEAD
-    
+
   //logout does not work because cookies are stored in the browser, cannot clear cookies because the default cookie package
   //is not supported for expo specifically, and alternative rctnetworking does not work either because this package is not
   //downloaded
@@ -118,7 +101,6 @@ export default function Login() {
     removeItem("@user_id")
     removeItem("@bearer_token")
   }
-=======
     //logout does not work because cookies are stored in the browser, cannot clear cookies because the default cookie package
     //is not supported for expo specifically, and alternative rctnetworking does not work either because this package is not
     //downloaded
@@ -134,7 +116,6 @@ export default function Login() {
         removeItem("@user_id");
         removeItem("@bearer_token");
     }
->>>>>>> c7aaa96bd6007522b11053d9fe87e391b5705be2
 
     console.log(`Redirect URL: ${redirectUri}`); //print redirect URL, used for getting the URL to register with auth0
 
@@ -183,37 +164,20 @@ export default function Login() {
     }, [result]);
     //WebBrowser.openAuthSessionAsync
     return (
-<<<<<<< HEAD
-    <View style={styles.container}>
-      { loggedIn  ? (
-        <>
-            <Text style={styles.title}>You are logged in!</Text>
-            <Button title="Log out" onPress={logout} />
-        </>
-        ) : (
-        <Button
-            disabled={!request}
-            title="Log in with Auth0"
-            onPress={() => promptAsync({ useProxy })}
-        />
-        )}
-    </View>
-=======
-        <View style={styles.container}>
-            {loggedIn ? (
-                <>
-                    <Text style={styles.title}>You are logged in!</Text>
-                    <Button title="Log out" onPress={logout} />
-                </>
-            ) : (
-                <Button
-                    disabled={!request}
-                    title="Log in with Auth0"
-                    onPress={() => promptAsync({ useProxy })}
-                />
-            )}
-        </View>
->>>>>>> c7aaa96bd6007522b11053d9fe87e391b5705be2
+      <View style={styles.container}>
+          {loggedIn ? (
+              <>
+                  <Text style={styles.title}>You are logged in!</Text>
+                  <Button title="Log out" onPress={logout} />
+              </>
+          ) : (
+              <Button
+                  disabled={!request}
+                  title="Log in with Auth0"
+                  onPress={() => promptAsync({ useProxy })}
+              />
+          )}
+      </View>
     );
 }
 /*
