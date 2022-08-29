@@ -12,9 +12,6 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 export default function Popup({ modalVisible, setModalVisible, modalData }) {
-    modalData.extendedIngredients.map((element, key) => {
-        console.log(element.name);
-    });
     return (
         <Modal
             animationType="slide"
