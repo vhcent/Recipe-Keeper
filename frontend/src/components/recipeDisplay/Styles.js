@@ -5,11 +5,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "center",
+        // marginTop: 5,
     },
 
     recipeBlock: {
         width: "45%",
         margin: 5,
+        marginTop: 0,
+        marginBottom: 10,
     },
 
     recipeTitle: {

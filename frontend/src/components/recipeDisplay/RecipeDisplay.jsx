@@ -48,7 +48,6 @@ export default function RecipeDisplay({ data }) {
             let curr = cache;
             let details = await getDetails(id);
             setModalData(details);
-            console.log(modalData.extendedIngredients);
             curr[id] = details;
             setCache(curr);
         }

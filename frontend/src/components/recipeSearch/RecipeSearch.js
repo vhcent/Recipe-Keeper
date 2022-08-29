@@ -7,7 +7,7 @@ export async function searchRecipe(recipeName) {
             SPOONACULAR_KEY +
             "&query=" +
             recipeName +
-            "&number=20",
+            "&number=30",
         {
             method: "GET",
             headers: {

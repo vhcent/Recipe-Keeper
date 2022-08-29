@@ -12,11 +12,16 @@ const styles = StyleSheet.create({
         paddingTop: "4%",
     },
 
+    scrollViewContainer: {
+        marginTop: 10,
+    },
+
     scrollView: {
         justifyContent: "flex-start",
         alignItems: "center",
         justifyContent: "flex-start",
         flexDirection: "column",
+        // paddingTop: 5,
         // backgroundColor: "#3A3A3A",
         // paddingTop: "4%",
     },

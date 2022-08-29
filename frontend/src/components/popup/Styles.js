@@ -4,25 +4,15 @@ const styles = StyleSheet.create({
     modalContainer: {
         width: "90%",
         height: "100%",
-        backgroundColor: "rgba(33, 30, 32, 0.5)",
         borderRadius: 10,
-        // alignItems: "center",
         alignSelf: "center",
-        // justifySelf: "center",
-        // marginTop: "30%",
     },
 
-    image: {
-        width: 170,
-        height: 150,
-        borderRadius: 10,
-    },
-
-    modalScrollView: {
+    scrollView: {
         width: "90%",
-        backgroundColor: "white",
+        backgroundColor: "#9B9CA5",
+        borderWidth: 1,
         borderRadius: 10,
-        borderColor: "red",
         alignSelf: "center",
         justifySelf: "center",
         minHeight: "80%",
@@ -30,17 +20,77 @@ const styles = StyleSheet.create({
         marginTop: "18%",
     },
 
-    modalText: {
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center",
-        margin: 10,
+    header: {
+        flexDirection: "row",
     },
 
-    icon: {
-        fontSize: 30,
+    title: {
+        width: "90%",
+        fontSize: 20,
+        padding: 10,
+        fontWeight: "bold",
+    },
+
+    close: {
+        width: "15%",
         marginLeft: "auto",
         padding: 10,
+    },
+
+    image: {
+        width: "100%",
+        height: 250,
+        borderRadius: 10,
+    },
+
+    heart: {
+        position: "absolute",
+        right: 0,
+        bottom: 0,
+        padding: 10,
+        paddingBottom: "2%",
+    },
+
+    basicInfo: {
+        padding: 10,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        fontSize: 20,
+    },
+
+    infoText: {
+        fontSize: 16,
+        // padding: 10,
+        fontWeight: "500",
+    },
+
+    ingredientsTitle: {
+        fontSize: 18,
+        marginLeft: 10,
+        marginBottom: 5,
+        fontWeight: "500",
+    },
+
+    ingredients: {
+        listStyleType: "none",
+        flexDirection: "column",
+        marginLeft: 10,
+    },
+
+    ingredientRow: {
+        flexDirection: "row",
+        marginBottom: 10,
+        alignItems: "center",
+    },
+
+    ingredientsText: {
+        fontSize: 18,
+        marginLeft: 10,
+        width: "85%",
+    },
+
+    plus: {
+        width: "15%",
     },
 });
 
