@@ -1,7 +1,8 @@
 
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
 import * as StorageUtils from "../../components/StorageUtils.js";
+import {AppContext} from "../../components/AppContextProvider.jsx";
 
 /*
 const [loggedIn, setLoggedIn] = useState(null);
@@ -35,24 +36,13 @@ async function apiCall(){
 }
 
   const [recipeList, setRecipeList] = React.useState(null);
-  const [loggedIn, setLoggedIn] = useState(null);
+  const [loggedIn, setLoggedIn] = useContext(AppContext) 
   //console.log("On the saved screen");
  // apiCall();
 
-  async function syncWithAsync(){
-    /*
-    if(await StorageUtils.getStorageItem('@user_id')){
-      setLoggedIn(true);
-    }
-    else setLoggedIn(null);
-    */
-  }
-
 
   useEffect(() => {
-    syncWithAsync()
-    //console.log("On the saved screen");
-    //apiCall();
+  
   });
   //currently triggered all the time, can be set to only fetch recipes when first entering the screen
   

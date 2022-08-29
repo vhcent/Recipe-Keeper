@@ -1,10 +1,12 @@
-const AppSettingsContext = React.createContext({})
+import React, { useEffect, useState, createContext } from "react";
 
-const AppSettingsContextProvider = ({children}) => {
-  const [appSettingsInitialized, setAppSettingsInitialized] = useState(false)
-  const [appSettings, setAppSettings] = useState({}) // could use some default values instead of empty object
+export const AppContext = createContext({})
 
-  // On mount, get the current value of `appSettings` in AsyncStorage
+const AppContextProvider = ({children}) => {
+  const [initialized, setInitialized] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); 
+
+  /*
   useEffect(() => {
     AsyncStorage
       .getItem('appSettings')
@@ -19,8 +21,9 @@ const AppSettingsContextProvider = ({children}) => {
         setAppSettingsInitialized(true)
       })
   }, [])
+  */
 
-  // setSettings sets the local state and AsyncStorage
+  /*
   const setSettings = (key, value) => {
     const mergedSettings = {
       ...appSettings,
@@ -32,14 +35,13 @@ const AppSettingsContextProvider = ({children}) => {
     // Then update the AsyncStorage item
     AsyncStorage.setItem('appSettings', JSON.stringify(mergedSettings))
   }
+  */
 
   return (
-    <AppSettingsContext.Provider value={{
-      appSettings,
-      appSettingsInitialized,
-      setSettings,
-    }}>
+    <AppContext.Provider value={[loggedIn, setLoggedIn]}>
       {children}
-    </AppSettingsContext.Provider>
+    </AppContext.Provider>
   )
 }
+
+export default AppContextProvider;
