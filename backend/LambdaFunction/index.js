@@ -135,7 +135,8 @@ async function recipeDeleteReq(req) {
         return resultGen(400, "invalid parameters for delete request")
     }
 
-    return dbManager.deleteRecipe(query.ID);
+    if(query.UserID) dbManager.deleteRecipeSaved(query.ID, query.UserID)
+    else return dbManager.deleteRecipe(query.ID);
     //res.send('We done with get request')
 }
 

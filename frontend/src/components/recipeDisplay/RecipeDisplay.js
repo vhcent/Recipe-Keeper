@@ -1,4 +1,6 @@
 import { SPOONACULAR_KEY } from "@env";
+import * as StorageUtils from "../../components/StorageUtils.js";
+import { API_ENDPOINT } from "@env";
 
 export async function getDetails(id) {
     console.log(id);
@@ -20,24 +22,81 @@ export async function getDetails(id) {
     return json;
 }
 
-export async function getDuplicates(userID, recipeIDString) {
-    recipeIDString += ",111111";
+export async function getDuplicates(recipeIDString) {
+    // recipeIDString += ",111111";
     console.log("Recipe ID String:", recipeIDString);
     console.log(typeof recipeIDString);
     console.log(recipeIDString);
-    let response = await fetch(
-        "https://cmivyuanic.execute-api.us-west-2.amazonaws.com/tentative/checkSaved?userID=auth0|62dedd66ea483987422d888c&IDs=111111,123123,555555,888888",
-        {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization:
-                    "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpOT2JMWVlpNjRCbXRxUUc2Q3BQSSJ9.eyJpc3MiOiJodHRwczovL2Rldi1jNXJ0Y2p2OC51cy5hdXRoMC5jb20vIiwic3ViIjoibG42a2JvMVNVZ3J4bHVaRUNaZEVTOGpGRkxIS2tPWDlAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vcmVjaXBlYXV0aCIsImlhdCI6MTY2MTI5ODM5NCwiZXhwIjoxNjYxMzg0Nzk0LCJhenAiOiJsbjZrYm8xU1VncnhsdVpFQ1pkRVM4akZGTEhLa09YOSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.PL4mIpG8H8zlfiyd8ZqHjwUFabA8qr-ed0JaPTAmyi1rgt5EwCwAhchAFte-uJgoS3Zjs67_oD74iaYDNB2EAcP0wmb_SXBIaXJhhXw4Ie0-nuxAU9k06tYeJxsKhdfTfl9ug_wGPz-0mgYlf92HXGhlea28bqo8dIw6p8jn8v5o6e3j8_om0gRx6zKlRA9zFYnzMd533QQFW2WvfQw-4zdzgVcIyz0putuT_4qlp6yjGBgeM1m-MPxfbWPKHZWLQ0PzTdYLLRykzgdWhAVL4Ftm4oGMHv4J3bhzLb6Yq65izf5nX7IiOoNiJUDC5wgi0vXKeSkfyPPoJNhXLGcK2A",
-            },
-        }
-    );
+
+    let userID = await StorageUtils.getStorageItem('@user_id')
+    console.log(userID)
+  
+    let bearerToken = await StorageUtils.getStorageItem('@bearer_token')
+    console.log(userID)
+    
+    let response = await fetch(`${API_ENDPOINT}/checkSaved?userID=${userID}&IDs=${recipeIDString}`, {
+        method: 'Get',
+        headers: {'Authorization': 'Bearer ' + bearerToken},
+        //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
+    })
+
     let json = await response.json();
     console.log("Duplicate List:", json); //prints out all the recipe details
     return json;
+}
+
+// Steps for generating the red heart
+// 1) Call the getDuplicates method to get duplicates recipes
+// 2) Go through the isSaved list and set appropriate recipes to true
+// 3) Generate the UI view and the red/grey hearts based on isSaved list
+
+// Upon saving
+// 1) Call the saveRecipe function to store in the backend
+// 2) saveRecipe function will update the boolean in isSaved list to true
+// 3) Regenerate the UI view with extra red heart
+
+//1) Saves the recipe to the saved recipes table
+//2) Update one red heart 
+
+export async function unsaveRecipe(recipeID, savedList){
+    savedList[parseInt(recipeID)] = false;
+    
+    let userID = await StorageUtils.getStorageItem('@user_id');
+    console.log(userID);
+
+    let bearerToken = await StorageUtils.getStorageItem('@bearer_token');
+    console.log(userID);
+
+}
+
+export async function saveRecipe(recipeID, photo, url, title, savedList, setSavedList) {
+    //set the red heart boolean to true
+    savedList[parseInt(recipeID)] = true;
+
+    let userID = await StorageUtils.getStorageItem('@user_id');
+    console.log(userID);
+
+    let bearerToken = await StorageUtils.getStorageItem('@bearer_token');
+    console.log(userID);
+
+    let postBody = {
+        userID: userID,
+        recipeID: recipeID,
+        photo: photo,
+        url: url,
+        title: title
+    }
+
+    let response = await fetch(`${API_ENDPOINT}/recipes?`,
+    //let response = await fetch(`{https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp}/recipes?userID=${userId}`,
+        {
+            method: "POST",
+            headers: {'Authorization': 'Bearer ' + bearerToken},
+            body: JSON.stringify(postBody)
+        }
+    );
+    
+   // let savedList[recipeId]
+    
+    //updateRecipeSaved(recideDisplayIndex);
 }

@@ -13,7 +13,7 @@ const discovery = AuthSession.fetchDiscoveryAsync(AUTH0_DOMAIN);
 
 export default function Login() {
 
-    //console.log(`Redirect URL: ${redirectUri}`); //print redirect URL, used for getting the URL to register with auth0
+    console.log(`Redirect URL: ${redirectUri}`); //print redirect URL, used for getting the URL to register with auth0
 
     const [loggedIn, setLoggedIn] = useContext(AppContext) //no more need for name since login occurs without it
     

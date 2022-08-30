@@ -3,6 +3,7 @@ import React, { Component, useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
 import * as StorageUtils from "../../components/StorageUtils.js";
 import {AppContext} from "../../components/AppContextProvider.jsx";
+import Auth from "../../components/auth/Auth.jsx";
 
 /*
 const [loggedIn, setLoggedIn] = useState(null);
@@ -49,22 +50,15 @@ async function apiCall(){
 
   return (
     <View>
-      { loggedIn  ? (
-        <>
-            <Text>You are logged in!</Text>
-        </>
-        ) : (
-          <>
-          <Text>You are not logged in :/</Text>
-          </>
-        )}
+      <Auth/>
+      
       <Image
         source={{
            uri: 'https://reactnative.dev/img/tiny_logo.png',
         }}
       />
       <Button
-        title="Click me you won't"
+        title="Click me to get your stored recipes! "
         onPress={() => apiCall()}
       />
       <Text>
@@ -77,7 +71,7 @@ async function apiCall(){
             <Text style={{marginBottom: 185, fontSize: 15}}> {recipeList[1].Name} </Text>
           </View>
         ) : (
-          <Text style={{marginBottom: 200, fontSize: 15}}> Why don't you click it and find out </Text>
+          <Text style={{marginBottom: 200, fontSize: 15}}> Click and this will display something </Text>
       )}
       
     </View>
@@ -86,3 +80,12 @@ async function apiCall(){
 
 export default SearchRecipe;
 
+/*{ loggedIn  ? (
+  <>
+  <Text>You are logged in!</Text>
+</>
+) : (
+<>
+<Text>You are not logged in :/</Text>
+</>
+)}*/

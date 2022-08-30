@@ -11,6 +11,7 @@ import {
     Header,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { getSaved } from "./Popup";
 
 export default function Popup({ modalVisible, setModalVisible, modalData }) {
     return (

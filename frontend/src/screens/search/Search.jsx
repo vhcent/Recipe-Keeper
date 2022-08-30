@@ -17,13 +17,13 @@ const Search = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.scrollViewContainer}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
             <RecipeSearch
                 data="dataTesting"
                 setRecipes={setRecipeData}
                 setDetails={setRecipeDetails}
             />
-            <View style={styles.scrollViewContainer}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
                     <RecipeDisplay
                         data={recipeData}
                         details={recipeDetails}

@@ -121,6 +121,21 @@ function deleteRecipe(ID) {
     });
 }
 
+function deleteRecipeSaved(ID, UserID) {
+    return new Promise(function (resolve, reject) {
+        connection.query(`delete from Saved where RecipeID = ${ID} and UserID = ${UserID}`, (error) => {
+            if (error) {
+                console.log("Error", error);
+                reject(error);
+            } else {
+                console.log(`deleted recipe with RecipeID: ${ID} and UserID = ${UserID}`);
+                resolve(resultGen(200, "Success")); //tentative
+            }
+        });
+    });
+}
+
+
 function checkDuplicates(userID, recipeIDList) {
     /*
     let query = "";
@@ -372,6 +387,7 @@ function updateRecent(name, URL, userID, photo, recipeID) {
 module.exports = {
     addRecipe,
     deleteRecipe,
+    deleteRecipeSaved,
     getAllRecipes,
     updateRecipeNotes,
     checkDuplicates,
