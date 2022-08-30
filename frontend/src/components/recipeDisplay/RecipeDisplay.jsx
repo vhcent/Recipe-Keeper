@@ -38,7 +38,7 @@ export default function RecipeDisplay({ data }) {
         setCache({});
         let recipeIDString = "";
         
-        setSavedList([]);
+        //setSavedList([]);
         console.log("savedListAll", savedList);
         for (let i = 0; i < data.length; i++) {
             savedList[data[i].id] = "gray";
@@ -51,18 +51,25 @@ export default function RecipeDisplay({ data }) {
         
         getDuplicates(recipeIDString).then((duplicates) => {
             console.log("duplicates: ", duplicates);
-            duplicates = [646071, 659782, 665496];
+            // duplicates = [646071, 659782, 665496];
             for(let i = 0 ; i < duplicates.length ; i++){
+                console.log("DUPLICATE ", i )
                 //for each duplicate, iterate through recipes till it is found 
-                savedList[duplicates[i]] = "red";
-                setSavedList(savedList);
-                console.log("duplicate ", duplicates[i], " ", savedList[duplicates[i]]);
+                setDuplicateRed(duplicates, i);
             }
             
         });
         // console.log("SDL:KFJ", recipeIDString);
         // getDuplicates(1, recipeIDString);
     }, [data]);
+
+    async function setDuplicateRed(duplicates, i){
+        let temp = JSON.parse(JSON.stringify(savedList))
+        temp[duplicates[i].RecipeID] = "red";
+        setSavedList(temp);
+        // Wait(1000);
+        console.log("setDuplicateRed ", typeof(duplicates[i].RecipeID), "---", savedList[duplicates[i].RecipeID]);
+    }
 
     async function showModal(id) {
         if (cache.hasOwnProperty(id)) {
@@ -78,7 +85,7 @@ export default function RecipeDisplay({ data }) {
     }
 
     async function handleSave(recipeID, saved, photo, url, title, key) {
-        console.log(savedList);
+        // console.log(savedList);
         console.log("saved",saved)
         if (saved == "red") {
             //remove from saved
@@ -88,7 +95,7 @@ export default function RecipeDisplay({ data }) {
             //let temp = {...savedList, prop: newOne};
             temp[recipeID] = "gray";
             setSavedList(temp);
-            console.log(savedList);
+            //console.log(savedList);
         }
 
         else {
@@ -98,7 +105,7 @@ export default function RecipeDisplay({ data }) {
             //let temp = {...savedList, prop: newOne};
             temp[recipeID] = "red";
             setSavedList(temp);
-            console.log(savedList);
+           // console.log(savedList);
         }
     }
 
@@ -127,10 +134,11 @@ export default function RecipeDisplay({ data }) {
                                 />
                             </View>
                         </TouchableHighlight>
+                        <Text> {savedList[element.id]}</Text>
                         <TouchableHighlight
                         onPress={() => {
                             // savedList[element.id] = "red";
-                            handleSave(element.id, savedList[element.id], element.photo, element.url, element.title, key);
+                            handleSave(element.id, savedList[element.id], element.image, "undefined", element.title, key);
                         }}>
                             <AntDesign 
                                 id={`heart-icon-${key}`}
