@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Styles";
-import { getDetails, getDuplicates, saveRecipe } from "./RecipeDisplay.js";
+import { getDetails, getDuplicates, saveRecipe, unsaveRecipe } from "./RecipeDisplay.js";
 import {
     StyleSheet,
     Text,
@@ -22,6 +22,7 @@ import { showModal } from "./RecipeDisplay.js";
 import Popup from "../popup/Popup.jsx";
 
 export default function RecipeDisplay({ data }) {
+    //console.log("data", data);
     const [recipeData, setRecipeData] = useState(data);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
@@ -40,7 +41,7 @@ export default function RecipeDisplay({ data }) {
         setSavedList([]);
         console.log("savedListAll", savedList);
         for (let i = 0; i < data.length; i++) {
-            savedList[data[i].id] = false;
+            savedList[data[i].id] = "gray";
             // console.log(data[i].id);
             // console.log("savedList ", i, " ", savedList[data[i].id]);
             if (i == 0) recipeIDString += data[i].id.toString();
@@ -53,7 +54,7 @@ export default function RecipeDisplay({ data }) {
             duplicates = [646071, 659782, 665496];
             for(let i = 0 ; i < duplicates.length ; i++){
                 //for each duplicate, iterate through recipes till it is found 
-                savedList[duplicates[i]] = true;
+                savedList[duplicates[i]] = "red";
                 setSavedList(savedList);
                 console.log("duplicate ", duplicates[i], " ", savedList[duplicates[i]]);
             }
@@ -76,14 +77,34 @@ export default function RecipeDisplay({ data }) {
         setModalVisible(true);
     }
 
-    async function handleSave(recipeId, saved) {
+    async function handleSave(recipeID, saved, photo, url, title, key) {
+        console.log(savedList);
+        console.log("saved",saved)
+        if (saved == "red") {
+            //remove from saved
+            console.log("unsaved");
+            await unsaveRecipe(recipeID);
+            let temp = JSON.parse(JSON.stringify(savedList))
+            //let temp = {...savedList, prop: newOne};
+            temp[recipeID] = "gray";
+            setSavedList(temp);
+            console.log(savedList);
+        }
 
+        else {
+            console.log("save");
+            await saveRecipe(recipeID, photo, url, title);
+            let temp = JSON.parse(JSON.stringify(savedList))
+            //let temp = {...savedList, prop: newOne};
+            temp[recipeID] = "red";
+            setSavedList(temp);
+            console.log(savedList);
+        }
     }
 
     return (
         <View>
         <View style={styles.recipeDisplay}>
-            {/* <Text>HELLO</Text> */}
             {data.map((element, key) => {
                 return (
                     <View style={styles.recipeBlock} key={key}>
@@ -106,13 +127,17 @@ export default function RecipeDisplay({ data }) {
                                 />
                             </View>
                         </TouchableHighlight>
-                        <TouchableHighlight>
-                            <AntDesign
-                                id="heart-icon"
+                        <TouchableHighlight
+                        onPress={() => {
+                            // savedList[element.id] = "red";
+                            handleSave(element.id, savedList[element.id], element.photo, element.url, element.title, key);
+                        }}>
+                            <AntDesign 
+                                id={`heart-icon-${key}`}
                                 name="heart"
                                 style={styles.heart}
                                 size={35}
-                                color={savedList[element.id] ? "red" : "gray"}
+                                color={savedList[element.id]}
                             />
                         </TouchableHighlight>
                     </View>

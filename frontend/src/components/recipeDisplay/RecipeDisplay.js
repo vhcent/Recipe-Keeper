@@ -58,21 +58,24 @@ export async function getDuplicates(recipeIDString) {
 //1) Saves the recipe to the saved recipes table
 //2) Update one red heart 
 
-export async function unsaveRecipe(recipeID, savedList){
-    savedList[parseInt(recipeID)] = false;
-    
+export async function unsaveRecipe(recipeID){
     let userID = await StorageUtils.getStorageItem('@user_id');
     console.log(userID);
 
     let bearerToken = await StorageUtils.getStorageItem('@bearer_token');
     console.log(userID);
 
+    fetch(`${API_ENDPOINT}/recipes?userID=${userID}&ID=${recipeID}`, {
+        method: 'Delete',
+        headers: {'Authorization': 'Bearer ' + bearerToken},
+        //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
+    }).then(console.log("successful delete"))
+    .catch((err) => {console.log(err)})
+
 }
 
-export async function saveRecipe(recipeID, photo, url, title, savedList, setSavedList) {
+export async function saveRecipe(recipeID, photo, url, title) {
     //set the red heart boolean to true
-    savedList[parseInt(recipeID)] = true;
-
     let userID = await StorageUtils.getStorageItem('@user_id');
     console.log(userID);
 
@@ -87,8 +90,9 @@ export async function saveRecipe(recipeID, photo, url, title, savedList, setSave
         title: title
     }
 
+    console.log("user id", userID);
+
     let response = await fetch(`${API_ENDPOINT}/recipes?`,
-    //let response = await fetch(`{https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp}/recipes?userID=${userId}`,
         {
             method: "POST",
             headers: {'Authorization': 'Bearer ' + bearerToken},
@@ -96,6 +100,7 @@ export async function saveRecipe(recipeID, photo, url, title, savedList, setSave
         }
     );
     
+    console.log("saveRecipeCalled: ", response.json());
    // let savedList[recipeId]
     
     //updateRecipeSaved(recideDisplayIndex);

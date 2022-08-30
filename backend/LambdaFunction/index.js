@@ -127,6 +127,7 @@ async function recipeDeleteReq(req) {
     
     const schema = Joi.object({
         ID: Joi.number().positive().required(),
+        userID: Joi.string()
     });
 
     let result = await validateJOI(schema, query)
@@ -134,8 +135,9 @@ async function recipeDeleteReq(req) {
         console.log("Returning 400 and Invalid params")
         return resultGen(400, "invalid parameters for delete request")
     }
-
-    if(query.UserID) dbManager.deleteRecipeSaved(query.ID, query.UserID)
+    if(query.userID){ 
+        return dbManager.deleteRecipeSaved(query.ID, query.userID)
+    }
     else return dbManager.deleteRecipe(query.ID);
     //res.send('We done with get request')
 }

@@ -123,7 +123,7 @@ function deleteRecipe(ID) {
 
 function deleteRecipeSaved(ID, UserID) {
     return new Promise(function (resolve, reject) {
-        connection.query(`delete from Saved where RecipeID = ${ID} and UserID = ${UserID}`, (error) => {
+        connection.query(`delete from Saved where RecipeID = ${ID} and UserID = "${UserID}";`, (error) => {
             if (error) {
                 console.log("Error", error);
                 reject(error);
