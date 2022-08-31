@@ -17,9 +17,7 @@ export async function searchByRecipe(recipeName) {
         }
     );
     let json = await response.json();
-    // console.log(json.results); //prints out all the recipes
     return json.results;
-    // alert(json["result"][0].title);
 }
 
 export async function searchByIngredients(ingredientsString) {
@@ -34,15 +32,13 @@ export async function searchByIngredients(ingredientsString) {
             newString += "+" + ingredientsList[i];
         } else newString += "+" + ingredientsList[i] + ",";
     }
-   // let apiCall = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${SPOONACULAR_KEY}&ingredients=${newString}&number=30`
-   let apiCall = "https://api.spoonacular.com/recipes/complexSearch?apiKey=" +
-            SPOONACULAR_KEY +
-            "&query=H&number=30";
-   console.log(
-        apiCall
-    );
 
-    let response = await fetch(apiCall,
+    let response = await fetch(
+        "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" +
+            SPOONACULAR_KEY +
+            "&ingredients=" +
+            newString +
+            "&number=30",
         {
             method: "GET",
             headers: {
@@ -52,8 +48,5 @@ export async function searchByIngredients(ingredientsString) {
         }
     );
     let json = await response.json();
-    console.log("response", json); //prints out all the recipes
-    // return json.results;
-    // alert(json["result"][0].title);
-    return json.results;
+    return json;
 }
