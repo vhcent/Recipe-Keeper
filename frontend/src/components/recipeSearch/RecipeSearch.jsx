@@ -1,8 +1,15 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    TextInput,
+    TouchableOpacity,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import styles from "./Styles";
-import { searchRecipe } from "./RecipeSearch.js";
+import { searchByRecipe, searchByIngredients } from "./RecipeSearch.js";
 
 class RecipeSearch extends Component {
     constructor(props) {
@@ -14,36 +21,61 @@ class RecipeSearch extends Component {
 
         this.state = {
             data: this.props.data,
+            byRecipe: true,
         };
     }
 
     async handleSearch(value) {
-        // Search for recipe and store it in state
-        let recipes = await searchRecipe(value);
-        // this.setState({ recipes: recipes });
-        this.setState({ data: recipes });
-        this.props.setRecipes(recipes);
-        // console.log("recipes", recipes);
+        if (this.state.byRecipe) {
+            // Search for recipe and store it in state
+            let recipes = await searchByRecipe(value);
+            this.setState({ data: recipes });
+            this.props.setRecipes(recipes);
+        } else {
+            let recipes = await searchByIngredients(value);
+            // console.log("recipes? ", recipes);
+            this.setState({ data: recipes });
+            this.props.setRecipes(recipes);
+        }
+        // this.setState({ data: recipes });
+        // this.props.setRecipes(recipes);
     }
 
     render() {
         return (
-            <View style={styles.searchBar}>
-                <TextInput
-                    id="searchBar"
-                    style={styles.text}
-                    placeholder="Search by Recipe"
-                    placeholderTextColor="#FFF"
-                    onChangeText={(text) => this.setState({ value: text })}
-                    onEndEditing={() => this.handleSearch(this.state.value)}
-                />
-                <FontAwesome
-                    id="search-icon"
-                    name="search"
-                    size={20}
-                    style={styles.icon}
-                    onPress={() => this.handleSearch(this.state.value)}
-                />
+            <View>
+                <View style={styles.searchBar}>
+                    <TextInput
+                        id="searchBar"
+                        style={styles.text}
+                        placeholder={
+                            this.state.byRecipe
+                                ? "Search by Recipe"
+                                : "Search by Ingredients"
+                        }
+                        placeholderTextColor="#FFF"
+                        onChangeText={(text) => this.setState({ value: text })}
+                        onEndEditing={() => this.handleSearch(this.state.value)}
+                    />
+                    <FontAwesome
+                        id="search-icon"
+                        name="search"
+                        size={20}
+                        style={styles.icon}
+                        onPress={() => this.handleSearch(this.state.value)}
+                    />
+                </View>
+                <TouchableOpacity
+                    onPress={() =>
+                        this.setState({ byRecipe: !this.state.byRecipe })
+                    }
+                >
+                    <Text>
+                        {this.state.byRecipe
+                            ? "Search by Ingredients"
+                            : "Search by Recipe"}
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -54,7 +86,7 @@ const RecipeSearch = () => {
 
     function handleSearch(value) {
         console.log(value.nativeEvent); 
-        searchRecipe(value.nativeEvent.text);
+        searchByRecipe(value.nativeEvent.text);
     }
 
     return (

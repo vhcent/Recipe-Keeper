@@ -32,8 +32,6 @@ export default function RecipeDisplay({ data }) {
     const [modalData, setModalData] = useState({});
     const [cache, setCache] = useState({});
     const [saveChange, setSaveChange] = useState(false);
-
-    //const [isSaved, setIsSaved ] = useState(null);
     const [savedList, setSavedList] = useState({}); //store a list of boolean values, each value is for if a recipe is saved
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 

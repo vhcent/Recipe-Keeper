@@ -70,12 +70,19 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: "row",
         justifyContent: "space-around",
+        alignItems: "center",
         fontSize: 20,
     },
 
     infoText: {
         fontSize: 16,
         // padding: 10,
+        fontWeight: "500",
+    },
+
+    urlText: {
+        fontSize: 16,
+        color: "blue",
         fontWeight: "500",
     },
 

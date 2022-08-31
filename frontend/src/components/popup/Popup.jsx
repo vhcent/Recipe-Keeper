@@ -11,7 +11,9 @@ import {
     ScrollView,
     Header,
 } from "react-native";
+import * as WebBrowser from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { getDuplicates, saveRecipe, unsaveRecipe, addGrocery } from "./Popup";
 
 export default function Popup({
@@ -22,7 +24,7 @@ export default function Popup({
     setSaveChange,
 }) {
     const [isSaved, setIsSaved] = useState(false);
-
+    console.log("savechange:", saveChange);
     useEffect(() => {
         getDuplicates(modalData.id.toString()).then((duplicates) => {
             console.log(duplicates);
@@ -38,13 +40,16 @@ export default function Popup({
             console.log("unsaved");
             await unsaveRecipe(recipeID);
             setIsSaved(false);
+            setSaveChange(!saveChange);
         } else {
             // Save to saved table
             console.log("save");
             await saveRecipe(recipeID, photo, url, title);
             setIsSaved(true);
+            setSaveChange(!saveChange);
         }
-        setSaveChange(!saveChange);
+        console.log("savechange:", saveChange);
+        // setSaveChange(!saveChange);
     }
 
     return (
@@ -105,6 +110,22 @@ export default function Popup({
                         Preparation Time: {modalData.readyInMinutes} minutes
                     </Text>
                 </View>
+                <TouchableOpacity
+                    style={styles.basicInfo}
+                    onPress={() =>
+                        WebBrowser.openBrowserAsync(modalData.sourceUrl)
+                    }
+                >
+                    <Text style={styles.urlText}>
+                        Source: {modalData.sourceUrl}
+                    </Text>
+                    <MaterialIcons
+                        id="open-in-new"
+                        name="open-in-new"
+                        size={30}
+                        color={"blue"}
+                    />
+                </TouchableOpacity>
 
                 <View>
                     <Text style={styles.ingredientsTitle}>Ingredients:</Text>

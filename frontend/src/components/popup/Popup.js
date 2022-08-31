@@ -80,7 +80,7 @@ export async function addGrocery(name) {
 
     let postBody = {
         userID: userID,
-        name: name,
+        item: name,
     };
 
     let response = await fetch(`${API_ENDPOINT}/grocery`, {
@@ -91,6 +91,6 @@ export async function addGrocery(name) {
         },
         body: JSON.stringify(postBody),
     });
-    console.log("response:", response);
-    alert("Grocery added successfully");
+    // console.log("response:", response.json());
+    alert("Added to Grocery List!");
 }
