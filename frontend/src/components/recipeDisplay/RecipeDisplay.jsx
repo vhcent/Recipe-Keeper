@@ -28,20 +28,16 @@ import { showModal } from "./RecipeDisplay.js";
 import Popup from "../popup/Popup.jsx";
 
 export default function RecipeDisplay({ data }) {
-    //console.log("data", data);
-    const [recipeData, setRecipeData] = useState(data);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState({});
     const [cache, setCache] = useState({});
+    const [saveChange, setSaveChange] = useState(false);
 
     //const [isSaved, setIsSaved ] = useState(null);
     const [savedList, setSavedList] = useState({}); //store a list of boolean values, each value is for if a recipe is saved
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 
     useEffect(() => {
-        setRecipeData(data);
-        setCache({});
-
         // Create comma seperated string of all recipe IDs
         let recipeIDString = "";
         for (let i = 0; i < data.length; i++) {
@@ -55,12 +51,11 @@ export default function RecipeDisplay({ data }) {
             console.log("duplicates: ", duplicates);
             let temp = JSON.parse(JSON.stringify(savedList));
             for (let i = 0; i < duplicates.length; i++) {
-                console.log("DUPLICATE ", i);
                 temp[duplicates[i].RecipeID] = "red";
             }
             setSavedList(temp);
         });
-    }, [data]);
+    }, [data, saveChange]);
 
     async function showModal(id) {
         if (cache.hasOwnProperty(id)) {
@@ -147,6 +142,8 @@ export default function RecipeDisplay({ data }) {
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}
                     modalData={modalData}
+                    saveChange={saveChange}
+                    setSaveChange={setSaveChange}
                 />
             ) : null}
         </View>

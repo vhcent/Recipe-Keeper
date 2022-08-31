@@ -22,10 +22,11 @@ const styles = StyleSheet.create({
 
     header: {
         flexDirection: "row",
+        justifyContent: "space-between",
     },
 
     title: {
-        width: "90%",
+        width: "85%",
         fontSize: 20,
         padding: 10,
         fontWeight: "bold",
@@ -41,6 +42,20 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 250,
         borderRadius: 10,
+    },
+
+    noImageText: {
+        fontSize: 20,
+        padding: 10,
+        fontWeight: "bold",
+    },
+
+    noImage: {
+        width: "100%",
+        height: 250,
+        fontSize: 100,
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     heart: {

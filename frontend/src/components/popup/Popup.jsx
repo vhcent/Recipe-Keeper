@@ -6,14 +6,47 @@ import {
     Image,
     Touchable,
     TouchableHighlight,
+    TouchableOpacity,
     Modal,
     ScrollView,
     Header,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { getSaved } from "./Popup";
+import { getDuplicates, saveRecipe, unsaveRecipe, addGrocery } from "./Popup";
 
-export default function Popup({ modalVisible, setModalVisible, modalData }) {
+export default function Popup({
+    modalVisible,
+    setModalVisible,
+    modalData,
+    saveChange,
+    setSaveChange,
+}) {
+    const [isSaved, setIsSaved] = useState(false);
+
+    useEffect(() => {
+        getDuplicates(modalData.id.toString()).then((duplicates) => {
+            console.log(duplicates);
+            if (duplicates.length == 1) {
+                setIsSaved(true);
+            }
+        });
+    }, [modalData]);
+
+    async function handleSave(recipeID, photo, url, title) {
+        if (isSaved) {
+            // Remove from saved table
+            console.log("unsaved");
+            await unsaveRecipe(recipeID);
+            setIsSaved(false);
+        } else {
+            // Save to saved table
+            console.log("save");
+            await saveRecipe(recipeID, photo, url, title);
+            setIsSaved(true);
+        }
+        setSaveChange(!saveChange);
+    }
+
     return (
         <Modal
             animationType="slide"
@@ -33,25 +66,40 @@ export default function Popup({ modalVisible, setModalVisible, modalData }) {
                     />
                 </View>
                 <View>
-                    <Image
-                        style={styles.image}
-                        source={{
-                            uri: modalData.image,
+                    {modalData.image != undefined ? (
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: modalData.image,
+                            }}
+                        />
+                    ) : (
+                        <View style={styles.noImage}>
+                            <Text style={styles.noImageText}>No Image</Text>
+                        </View>
+                    )}
+                    <TouchableOpacity
+                        onPress={() => {
+                            handleSave(
+                                modalData.id,
+                                modalData.image,
+                                "undefined",
+                                modalData.title
+                            );
                         }}
-                    />
-                    <TouchableHighlight>
+                        style={styles.heart}
+                    >
                         <AntDesign
                             id="heart-icon"
                             name="heart"
-                            style={styles.heart}
                             size={50}
-                            color={"red"}
+                            color={isSaved ? "red" : "gray"}
                         />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.basicInfo}>
                     <Text style={styles.infoText}>
-                        Serves: {modalData.servings}
+                        Servings: {modalData.servings}
                     </Text>
                     <Text style={styles.infoText}>
                         Preparation Time: {modalData.readyInMinutes} minutes
@@ -73,7 +121,9 @@ export default function Popup({ modalVisible, setModalVisible, modalData }) {
                                         size={30}
                                         color={"green"}
                                         style={styles.icon}
-                                        onPress={() => setModalVisible(false)}
+                                        onPress={() =>
+                                            addGrocery(element.original)
+                                        }
                                     />
                                 </View>
                             );

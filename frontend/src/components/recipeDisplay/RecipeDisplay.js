@@ -6,9 +6,9 @@ export async function getDetails(id) {
     console.log(id);
     let response = await fetch(
         "https://api.spoonacular.com/recipes/" +
-        id +
-        "/information?apiKey=" +
-        SPOONACULAR_KEY,
+            id +
+            "/information?apiKey=" +
+            SPOONACULAR_KEY,
         {
             method: "GET",
             headers: {
@@ -23,22 +23,22 @@ export async function getDetails(id) {
 }
 
 export async function getDuplicates(recipeIDString) {
-    // recipeIDString += ",111111";
-    console.log("Recipe ID String:", recipeIDString);
-    console.log(typeof recipeIDString);
     console.log(recipeIDString);
 
-    let userID = await StorageUtils.getStorageItem('@user_id')
-    console.log(userID)
+    let userID = await StorageUtils.getStorageItem("@user_id");
+    console.log(userID);
 
-    let bearerToken = await StorageUtils.getStorageItem('@bearer_token')
-    console.log(bearerToken)
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
+    console.log(bearerToken);
 
-    let response = await fetch(`${API_ENDPOINT}/checkSaved?userID=${userID}&IDs=${recipeIDString}`, {
-        method: 'Get',
-        headers: { 'Authorization': 'Bearer ' + bearerToken },
-        //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
-    })
+    let response = await fetch(
+        `${API_ENDPOINT}/checkSaved?userID=${userID}&IDs=${recipeIDString}`,
+        {
+            method: "Get",
+            headers: { Authorization: "Bearer " + bearerToken },
+            //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
+        }
+    );
 
     let json = await response.json();
     return json;
@@ -55,29 +55,34 @@ export async function getDuplicates(recipeIDString) {
 // 3) Regenerate the UI view with extra red heart
 
 //1) Saves the recipe to the saved recipes table
-//2) Update one red heart 
+//2) Update one red heart
 
 export async function unsaveRecipe(recipeID) {
-    let userID = await StorageUtils.getStorageItem('@user_id');
+    let userID = await StorageUtils.getStorageItem("@user_id");
     console.log(userID);
 
-    let bearerToken = await StorageUtils.getStorageItem('@bearer_token');
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
     console.log(userID);
 
     fetch(`${API_ENDPOINT}/recipes?userID=${userID}&ID=${recipeID}`, {
-        method: 'Delete',
-        headers: { 'Authorization': 'Bearer ' + bearerToken, 'Content-Type': 'application/json' },
+        method: "Delete",
+        headers: {
+            Authorization: "Bearer " + bearerToken,
+            "Content-Type": "application/json",
+        },
         //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
-    }).then(console.log("successful delete"))
-        .catch((err) => { console.log(err) })
-
+    })
+        .then(console.log("successful delete"))
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 export async function saveRecipe(recipeID, photo, url, title) {
-    let userID = await StorageUtils.getStorageItem('@user_id');
+    let userID = await StorageUtils.getStorageItem("@user_id");
     console.log(userID);
 
-    let bearerToken = await StorageUtils.getStorageItem('@bearer_token');
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
     console.log("bearer", bearerToken);
 
     let postBody = {
@@ -85,20 +90,22 @@ export async function saveRecipe(recipeID, photo, url, title) {
         recipeID: recipeID,
         photo: photo,
         url: url,
-        name: title
-    }
+        name: title,
+    };
 
     console.log("user id", userID);
     console.log("postBody", JSON.stringify(postBody));
     console.log("postBodyNonJSON", postBody);
 
-    let response = await fetch(`https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp/recipes`, //${API_ENDPOINT}/recipes`,
+    let response = await fetch(
+        `https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp/recipes`, //${API_ENDPOINT}/recipes`,
         {
             method: "POST",
-            headers: { 'Authorization': 'Bearer ' + bearerToken, 'Content-Type': 'application/json' },
+            headers: {
+                Authorization: "Bearer " + bearerToken,
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify(postBody),
         }
     );
-
-    console.log("saveRecipeCalled: ", response.json());
 }

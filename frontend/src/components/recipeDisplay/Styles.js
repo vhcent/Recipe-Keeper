@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "center",
-        // marginTop: 5,
+        marginTop: 10,
     },
 
     recipeBlock: {
