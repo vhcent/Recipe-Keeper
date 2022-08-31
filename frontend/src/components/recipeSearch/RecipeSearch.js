@@ -34,14 +34,6 @@ export async function searchByIngredients(ingredientsString) {
             newString += "+" + ingredientsList[i];
         } else newString += "+" + ingredientsList[i] + ",";
     }
-    console.log(
-        "NEWSTRING:",
-        "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" +
-            SPOONACULAR_KEY +
-            "&ingredients=" +
-            newString +
-            "&number=30"
-    );
 
     let response = await fetch(
         "https://api.spoonacular.com/recipes/findByIngredients?apiKey=" +
@@ -57,8 +49,7 @@ export async function searchByIngredients(ingredientsString) {
             },
         }
     );
-    // let json = await response.json();
-    console.log("response", response); //prints out all the recipes
-    // return json.results;
+    let json = await response.json();
+    return json;
     // alert(json["result"][0].title);
 }

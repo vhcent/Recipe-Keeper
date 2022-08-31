@@ -25,6 +25,16 @@ const styles = StyleSheet.create({
         width: "90%",
         color: "white",
     },
+
+    changeSearchContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+    },
+
+    changeSearchText: {
+        color: "turquoise",
+        left: 0,
+    },
 });
 
 export default styles;
