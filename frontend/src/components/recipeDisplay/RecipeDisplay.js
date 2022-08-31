@@ -23,13 +23,8 @@ export async function getDetails(id) {
 }
 
 export async function getDuplicates(recipeIDString) {
-    console.log(recipeIDString);
-
     let userID = await StorageUtils.getStorageItem("@user_id");
-    console.log(userID);
-
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
-    console.log(bearerToken);
 
     let response = await fetch(
         `${API_ENDPOINT}/checkSaved?userID=${userID}&IDs=${recipeIDString}`,
