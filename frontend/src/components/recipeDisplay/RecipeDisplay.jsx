@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Styles";
-import { getDetails, getDuplicates, saveRecipe, unsaveRecipe } from "./RecipeDisplay.js";
+import {
+    getDetails,
+    getDuplicates,
+    saveRecipe,
+    unsaveRecipe,
+} from "./RecipeDisplay.js";
 import {
     StyleSheet,
     Text,
@@ -14,6 +19,7 @@ import {
     ScrollView,
     Touchable,
     TouchableHighlight,
+    TouchableOpacity,
     Modal,
 } from "react-native";
 import { BlurView } from "@react-native-community/blur";
@@ -32,44 +38,29 @@ export default function RecipeDisplay({ data }) {
     const [savedList, setSavedList] = useState({}); //store a list of boolean values, each value is for if a recipe is saved
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 
-
     useEffect(() => {
         setRecipeData(data);
         setCache({});
+
+        // Create comma seperated string of all recipe IDs
         let recipeIDString = "";
-        
-        //setSavedList([]);
-        console.log("savedListAll", savedList);
         for (let i = 0; i < data.length; i++) {
             savedList[data[i].id] = "gray";
-            // console.log(data[i].id);
-            // console.log("savedList ", i, " ", savedList[data[i].id]);
             if (i == 0) recipeIDString += data[i].id.toString();
             else recipeIDString += "," + data[i].id.toString();
         }
-        console.log("recipeList: ", recipeIDString);
-        
+
+        // Get duplicates and change corresponding color to red in savedList
         getDuplicates(recipeIDString).then((duplicates) => {
             console.log("duplicates: ", duplicates);
-            // duplicates = [646071, 659782, 665496];
-            for(let i = 0 ; i < duplicates.length ; i++){
-                console.log("DUPLICATE ", i )
-                //for each duplicate, iterate through recipes till it is found 
-                setDuplicateRed(duplicates, i);
+            let temp = JSON.parse(JSON.stringify(savedList));
+            for (let i = 0; i < duplicates.length; i++) {
+                console.log("DUPLICATE ", i);
+                temp[duplicates[i].RecipeID] = "red";
             }
-            
+            setSavedList(temp);
         });
-        // console.log("SDL:KFJ", recipeIDString);
-        // getDuplicates(1, recipeIDString);
     }, [data]);
-
-    async function setDuplicateRed(duplicates, i){
-        let temp = JSON.parse(JSON.stringify(savedList))
-        temp[duplicates[i].RecipeID] = "red";
-        setSavedList(temp);
-        // Wait(1000);
-        console.log("setDuplicateRed ", typeof(duplicates[i].RecipeID), "---", savedList[duplicates[i].RecipeID]);
-    }
 
     async function showModal(id) {
         if (cache.hasOwnProperty(id)) {
@@ -85,81 +76,79 @@ export default function RecipeDisplay({ data }) {
     }
 
     async function handleSave(recipeID, saved, photo, url, title, key) {
-        // console.log(savedList);
-        console.log("saved",saved)
         if (saved == "red") {
-            //remove from saved
+            // Remove from saved table
             console.log("unsaved");
             await unsaveRecipe(recipeID);
-            let temp = JSON.parse(JSON.stringify(savedList))
-            //let temp = {...savedList, prop: newOne};
+            let temp = JSON.parse(JSON.stringify(savedList));
             temp[recipeID] = "gray";
             setSavedList(temp);
-            //console.log(savedList);
-        }
-
-        else {
+        } else {
+            // Save to saved table
             console.log("save");
             await saveRecipe(recipeID, photo, url, title);
-            let temp = JSON.parse(JSON.stringify(savedList))
-            //let temp = {...savedList, prop: newOne};
+            let temp = JSON.parse(JSON.stringify(savedList));
             temp[recipeID] = "red";
             setSavedList(temp);
-           // console.log(savedList);
         }
     }
 
     return (
         <View>
-        <View style={styles.recipeDisplay}>
-            {data.map((element, key) => {
-                return (
-                    <View style={styles.recipeBlock} key={key}>
-                        <Text style={styles.recipeTitle}>
-                            {element.title.length <= 19
-                                ? element.title
-                                : element.title.slice(0, 19) + "..."}
-                        </Text>
-                        <TouchableHighlight
-                            onPress={() => {
-                                showModal(element.id);
-                            }}
-                        >
-                            <View>
-                                <Image
-                                    style={styles.image}
-                                    source={{
-                                        uri: element.image,
-                                    }}
-                                />
-                            </View>
-                        </TouchableHighlight>
-                        <Text> {savedList[element.id]}</Text>
-                        <TouchableHighlight
-                        onPress={() => {
-                            // savedList[element.id] = "red";
-                            handleSave(element.id, savedList[element.id], element.image, "undefined", element.title, key);
-                        }}>
-                            <AntDesign 
-                                id={`heart-icon-${key}`}
-                                name="heart"
+            <View style={styles.recipeDisplay}>
+                {data.map((element, key) => {
+                    return (
+                        <View style={styles.recipeBlock} key={key}>
+                            <Text style={styles.recipeTitle}>
+                                {element.title.length <= 19
+                                    ? element.title
+                                    : element.title.slice(0, 19) + "..."}
+                            </Text>
+                            <TouchableHighlight
+                                onPress={() => {
+                                    showModal(element.id);
+                                }}
+                            >
+                                <View>
+                                    <Image
+                                        style={styles.image}
+                                        source={{
+                                            uri: element.image,
+                                        }}
+                                    />
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableOpacity
                                 style={styles.heart}
-                                size={35}
-                                color={savedList[element.id]}
-                            />
-                        </TouchableHighlight>
-                    </View>
-                );
-            })}
+                                onPress={() => {
+                                    handleSave(
+                                        element.id,
+                                        savedList[element.id],
+                                        element.image,
+                                        "undefined",
+                                        element.title,
+                                        key
+                                    );
+                                }}
+                            >
+                                <AntDesign
+                                    id={`heart-icon-${key}`}
+                                    name="heart"
+                                    size={40}
+                                    color={savedList[element.id]}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    );
+                })}
+            </View>
+            {modalVisible ? (
+                <Popup
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    modalData={modalData}
+                />
+            ) : null}
         </View>
-        {modalVisible ? (
-            <Popup
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                modalData={modalData}
-            />
-        ) : null}
-    </View>
     );
 }
-    

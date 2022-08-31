@@ -32,7 +32,7 @@ export async function getDuplicates(recipeIDString) {
     console.log(userID)
 
     let bearerToken = await StorageUtils.getStorageItem('@bearer_token')
-    console.log(userID)
+    console.log(bearerToken)
 
     let response = await fetch(`${API_ENDPOINT}/checkSaved?userID=${userID}&IDs=${recipeIDString}`, {
         method: 'Get',
@@ -41,7 +41,6 @@ export async function getDuplicates(recipeIDString) {
     })
 
     let json = await response.json();
-    console.log("Duplicate List:", json); //prints out all the recipe details
     return json;
 }
 
@@ -67,7 +66,7 @@ export async function unsaveRecipe(recipeID) {
 
     fetch(`${API_ENDPOINT}/recipes?userID=${userID}&ID=${recipeID}`, {
         method: 'Delete',
-        headers: { 'Authorization': 'Bearer ' + bearerToken },
+        headers: { 'Authorization': 'Bearer ' + bearerToken, 'Content-Type': 'application/json' },
         //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
     }).then(console.log("successful delete"))
         .catch((err) => { console.log(err) })
@@ -75,7 +74,6 @@ export async function unsaveRecipe(recipeID) {
 }
 
 export async function saveRecipe(recipeID, photo, url, title) {
-    //set the red heart boolean to true
     let userID = await StorageUtils.getStorageItem('@user_id');
     console.log(userID);
 
@@ -103,7 +101,4 @@ export async function saveRecipe(recipeID, photo, url, title) {
     );
 
     console.log("saveRecipeCalled: ", response.json());
-    // let savedList[recipeId]
-
-    //updateRecipeSaved(recideDisplayIndex);
 }
