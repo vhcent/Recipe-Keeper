@@ -66,11 +66,12 @@ class RecipeSearch extends Component {
                     />
                 </View>
                 <TouchableOpacity
+                    style={styles.changeSearchContainer}
                     onPress={() =>
                         this.setState({ byRecipe: !this.state.byRecipe })
                     }
                 >
-                    <Text>
+                    <Text style={styles.changeSearchText}>
                         {this.state.byRecipe
                             ? "Search by Ingredients"
                             : "Search by Recipe"}
