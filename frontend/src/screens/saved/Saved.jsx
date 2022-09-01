@@ -41,10 +41,15 @@ async function apiCall(){
   //console.log("On the saved screen");
  // apiCall();
 
-
-  useEffect(() => {
-  
+ useEffect(() => {
+  const unsubscribe = navigation.addListener("focus", () => {
+    // The screen is focused
+    // Call any action
+    getGrocery(setGroceryList);
   });
+  // Return the function to unsubscribe from the event so it gets removed on unmount
+  return unsubscribe;
+}, [navigation]);
   //currently triggered all the time, can be set to only fetch recipes when first entering the screen
   
 
@@ -59,7 +64,7 @@ async function apiCall(){
       />
       <Button
         title="Click me to get your stored recipes! "
-        onPress={() => apiCall()}
+        onPress={() => fetchRecipes()}
       />
       <Text>
           "Search for Recipe"

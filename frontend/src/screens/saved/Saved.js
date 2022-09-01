@@ -1,7 +1,7 @@
 import * as StorageUtils from "../../components/StorageUtils.js";
 import { API_ENDPOINT } from "@env";
 
-export async function getAllRecipes(userID) {
+export async function getAllRecipes() {
 
     let userID = await StorageUtils.getStorageItem("@user_id");
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
@@ -16,6 +16,7 @@ export async function getAllRecipes(userID) {
     );
 
     let json = await response.json();
+    console.log(json)
     return json;
 }
 

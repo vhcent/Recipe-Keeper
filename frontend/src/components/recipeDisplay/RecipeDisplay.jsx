@@ -27,6 +27,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { showModal } from "./RecipeDisplay.js";
 import {AppContext} from "../../components/AppContextProvider.jsx";
 import Popup from "../popup/Popup.jsx";
+import LoginPopup from "../loginPopup/LoginPopup.jsx";
 
 export default function RecipeDisplay({ data }) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -34,10 +35,12 @@ export default function RecipeDisplay({ data }) {
     const [cache, setCache] = useState({});
     const [saveChange, setSaveChange] = useState(false);
     const [savedList, setSavedList] = useState({}); //store a list of boolean values, each value is for if a recipe is saved
-    const [loggedIn, setLoggedIn] = useContext(AppContext) 
+    const [loggedIn, setLoggedIn] = useContext(AppContext);
+    const [loginModalVisible, setLoginModalVisible] = useState(false);
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 
     useEffect(() => {
+        console.log("logged in?", loggedIn)
         // Create comma seperated string of all recipe IDs
         let recipeIDString = "";
         for (let i = 0; i < data.length; i++) {
@@ -55,7 +58,7 @@ export default function RecipeDisplay({ data }) {
             }
             setSavedList(temp);
         });
-    }, [data, saveChange]);
+    }, [data, saveChange, loggedIn, loginModalVisible]);
 
     async function showModal(id) {
         if (cache.hasOwnProperty(id)) {
@@ -72,7 +75,8 @@ export default function RecipeDisplay({ data }) {
 
     async function handleSave(recipeID, saved, photo, url, title, key) {
         if(!loggedIn){
-            //do something to encourage to login
+            console.log("the user is not logged in")
+            setLoginModalVisible(true);
         }
         else{
             if (saved == "red") {
@@ -135,7 +139,7 @@ export default function RecipeDisplay({ data }) {
                                     id={`heart-icon-${key}`}
                                     name="heart"
                                     size={40}
-                                    color={savedList[element.id]}
+                                    color={loggedIn ? savedList[element.id] : "gray"}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -151,6 +155,7 @@ export default function RecipeDisplay({ data }) {
                     setSaveChange={setSaveChange}
                 />
             ) : null}
+        <LoginPopup loginModalVisible={loginModalVisible} setLoginModalVisible={setLoginModalVisible}/>
         </View>
     );
 }

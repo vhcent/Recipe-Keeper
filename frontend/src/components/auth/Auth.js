@@ -16,12 +16,13 @@ async function logout(setLoggedInState){
       console.log("Cleared cookies status " + cleared);
         //this.setStatus('Cookies cleared, had cookies=' + cleared);
     });
+    
+    await StorageUtils.removeItem("@user_id")
+    await StorageUtils.removeItem("@bearer_token")
     setLoggedInState(null);
-    StorageUtils.removeItem("@user_id")
-    StorageUtils.removeItem("@bearer_token")
 }
 
-async function oauthFlow(details) {
+async function oauthFlow(details, setLoggedIn) {
     //parse into query string then call
     var formBody = [];
     for (var property in details) {
@@ -41,11 +42,11 @@ async function oauthFlow(details) {
 
     let bearerToken = json.access_token;
     console.log("Bearer token:" + bearerToken);
-    StorageUtils.storeItem("@bearer_token", bearerToken);
+    await StorageUtils.storeItem("@bearer_token", bearerToken);
 
     let decoded = jwtDecode(json.id_token);
     console.log("User ID:" + decoded.sub);
-    StorageUtils.storeItem("@user_id", decoded.sub);
+    await StorageUtils.storeItem("@user_id", decoded.sub);
 }
 
 module.exports = {
