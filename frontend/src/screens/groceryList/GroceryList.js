@@ -1,8 +1,8 @@
 import * as StorageUtils from "../../components/StorageUtils.js";
 import { API_ENDPOINT } from "@env";
 
-export async function getGroceries(userID) {
-
+export async function getGrocery(setGroceryList) {
+    
     let userID = await StorageUtils.getStorageItem("@user_id");
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
 
@@ -15,8 +15,12 @@ export async function getGroceries(userID) {
         }
     );
 
+    //console.log("getgrocery repo", response)
     let json = await response.json();
-    return json;
+    console.log(json)
+    console.log(json[0])
+    console.log(typeof(json))
+    setGroceryList(json);
 }
 
 export async function deleteGrocery(ID) {
@@ -31,7 +35,32 @@ export async function deleteGrocery(ID) {
             //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
         }
     );
-
+    console.log("trying to delete")
     let json = await response.json();
     return json;
+}
+
+
+export async function addGrocery(name) {
+    let userID = await StorageUtils.getStorageItem("@user_id");
+    console.log(userID);
+
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
+    console.log("bearer", bearerToken);
+
+    let postBody = {
+        userID: userID,
+        item: name,
+    };
+
+    let response = await fetch(`${API_ENDPOINT}/grocery`, {
+        method: "POST",
+        headers: {
+            Authorization: "Bearer " + bearerToken,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postBody),
+    });
+    // console.log("response:", response.json());
+    alert("Added to Grocery List!");
 }

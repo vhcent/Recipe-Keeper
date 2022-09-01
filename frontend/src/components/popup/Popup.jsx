@@ -14,6 +14,7 @@ import {
 import * as WebBrowser from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import {Fontisto} from "@expo/vector-icons";
 import { getDuplicates, saveRecipe, unsaveRecipe, addGrocery } from "./Popup";
 import {AppContext} from "../../components/AppContextProvider.jsx";
 
@@ -25,7 +26,7 @@ export default function Popup({
     setSaveChange,
 }) {
     const [isSaved, setIsSaved] = useState(false);
-    const [loggedIn, setLoggedIn] = useContext(AppContext) 
+    const [loggedIn, setLoggedIn] = useContext(AppContext);
     console.log("savechange:", saveChange);
     useEffect(() => {
         getDuplicates(modalData.id.toString()).then((duplicates) => {
@@ -144,6 +145,7 @@ export default function Popup({
                                     <Text style={styles.ingredientsText}>
                                         {element.original}
                                     </Text>
+                                    {loggedIn ?
                                     <AntDesign
                                         id="plus"
                                         name="plus"
@@ -153,7 +155,7 @@ export default function Popup({
                                         onPress={() =>
                                             addGrocery(element.original)
                                         }
-                                    />
+                                    /> : null}
                                 </View>
                             );
                         })}

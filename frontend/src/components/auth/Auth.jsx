@@ -15,7 +15,7 @@ export default function Login() {
 
     console.log(`Redirect URL: ${redirectUri}`); //print redirect URL, used for getting the URL to register with auth0
 
-    const [loggedIn, setLoggedIn] = useContext(AppContext) //no more need for name since login occurs without it
+    const [loggedIn, setLoggedIn] = useContext(AppContext); //no more need for name since login occurs without it
     
     let authorizationEndpoint = `${AUTH0_DOMAIN}/authorize`;
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
