@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Styles";
 import {
     getDetails,
@@ -25,6 +25,7 @@ import {
 import { BlurView } from "@react-native-community/blur";
 import { AntDesign } from "@expo/vector-icons";
 import { showModal } from "./RecipeDisplay.js";
+import {AppContext} from "../../components/AppContextProvider.jsx";
 import Popup from "../popup/Popup.jsx";
 
 export default function RecipeDisplay({ data }) {
@@ -33,6 +34,7 @@ export default function RecipeDisplay({ data }) {
     const [cache, setCache] = useState({});
     const [saveChange, setSaveChange] = useState(false);
     const [savedList, setSavedList] = useState({}); //store a list of boolean values, each value is for if a recipe is saved
+    const [loggedIn, setLoggedIn] = useContext(AppContext) 
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 
     useEffect(() => {
@@ -69,20 +71,25 @@ export default function RecipeDisplay({ data }) {
     }
 
     async function handleSave(recipeID, saved, photo, url, title, key) {
-        if (saved == "red") {
-            // Remove from saved table
-            console.log("unsaved");
-            await unsaveRecipe(recipeID);
-            let temp = JSON.parse(JSON.stringify(savedList));
-            temp[recipeID] = "gray";
-            setSavedList(temp);
-        } else {
-            // Save to saved table
-            console.log("save");
-            await saveRecipe(recipeID, photo, url, title);
-            let temp = JSON.parse(JSON.stringify(savedList));
-            temp[recipeID] = "red";
-            setSavedList(temp);
+        if(!loggedIn){
+            //do something to encourage to login
+        }
+        else{
+            if (saved == "red") {
+                // Remove from saved table
+                console.log("unsaved");
+                await unsaveRecipe(recipeID);
+                let temp = JSON.parse(JSON.stringify(savedList));
+                temp[recipeID] = "gray";
+                setSavedList(temp);
+            } else {
+                // Save to saved table
+                console.log("save");
+                await saveRecipe(recipeID, photo, url, title);
+                let temp = JSON.parse(JSON.stringify(savedList));
+                temp[recipeID] = "red";
+                setSavedList(temp);
+            }
         }
     }
 

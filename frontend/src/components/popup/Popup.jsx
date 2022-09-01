@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Styles";
 import {
     Text,
@@ -15,6 +15,7 @@ import * as WebBrowser from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getDuplicates, saveRecipe, unsaveRecipe, addGrocery } from "./Popup";
+import {AppContext} from "../../components/AppContextProvider.jsx";
 
 export default function Popup({
     modalVisible,
@@ -24,6 +25,7 @@ export default function Popup({
     setSaveChange,
 }) {
     const [isSaved, setIsSaved] = useState(false);
+    const [loggedIn, setLoggedIn] = useContext(AppContext) 
     console.log("savechange:", saveChange);
     useEffect(() => {
         getDuplicates(modalData.id.toString()).then((duplicates) => {
@@ -35,20 +37,26 @@ export default function Popup({
     }, [modalData]);
 
     async function handleSave(recipeID, photo, url, title) {
-        if (isSaved) {
-            // Remove from saved table
-            console.log("unsaved");
-            await unsaveRecipe(recipeID);
-            setIsSaved(false);
-            setSaveChange(!saveChange);
-        } else {
-            // Save to saved table
-            console.log("save");
-            await saveRecipe(recipeID, photo, url, title);
-            setIsSaved(true);
-            setSaveChange(!saveChange);
+        if(!loggedIn){
+            //prompt some login
         }
-        console.log("savechange:", saveChange);
+        else{
+            if (isSaved) {
+                // Remove from saved table
+                console.log("unsaved");
+                await unsaveRecipe(recipeID);
+                setIsSaved(false);
+                setSaveChange(!saveChange);
+            } else {
+                // Save to saved table
+                console.log("save");
+                await saveRecipe(recipeID, photo, url, title);
+                setIsSaved(true);
+                setSaveChange(!saveChange);
+            }
+            console.log("savechange:", saveChange);
+        }
+       
         // setSaveChange(!saveChange);
     }
 
