@@ -3,11 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     log: {
         padding: 10,
-        flexDirection: "row",
-        // width: "100%",
-        justifySelf: "flex-end",
-        alignItems: "flex-end",
-        alignSelf: "flex-end",
+        // alignSelf: "flex-end",
     },
 
     container: {
@@ -25,7 +21,7 @@ const styles = StyleSheet.create({
     },
 
     searchBar: {
-        marginTop: 20,
+        marginTop: 10,
         // marginBottom: 20,
         flexDirection: "row",
         justifySelf: "center",
@@ -57,7 +53,7 @@ const styles = StyleSheet.create({
     },
 
     groceryText: {
-        fontSize: 18,
+        fontSize: 21,
         color: "turquoise",
         alignSelf: "center",
     },
@@ -70,7 +66,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 10,
+        padding: 7,
+        borderBottomWidth: 0.8,
+        borderColor: "white",
     },
 });
 

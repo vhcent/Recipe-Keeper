@@ -77,17 +77,20 @@ export default function Login() {
             {loggedIn ? (
                 <>
                     {/* <Text style={styles.title}>You are logged in!</Text> */}
-                    <Button
-                        title="Log out"
+                    <Pressable
                         onPress={() => {
                             logout(setLoggedIn);
                         }}
-                    />
+                        style={styles.button}
+                        disabled={!request}
+                    >
+                        <Text style={styles.loginText}>Log Out</Text>
+                    </Pressable>
                 </>
             ) : (
                 <Pressable
                     onPress={() => promptAsync({ useProxy })}
-                    style={styles.button}
+                    style={styles.loginButton}
                     disabled={!request}
                 >
                     <Text style={styles.loginText}>Log in</Text>
