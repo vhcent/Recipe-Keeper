@@ -1,24 +1,36 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    log: {
+        padding: 10,
+        flexDirection: "row",
+        // width: "100%",
+        justifySelf: "flex-end",
+        alignItems: "flex-end",
+        alignSelf: "flex-end",
+    },
+
     container: {
+        backgroundColor: "#3A3A3A",
+        height: "100%",
+    },
+
+    scrollContainer: {
         justifyContent: "flex-start",
         alignItems: "center",
         justifyContent: "flex-start",
         flexDirection: "column",
         width: "100%",
-        height: "100%",
-        backgroundColor: "#3A3A3A",
         paddingTop: "4%",
     },
 
     searchBar: {
-        // marginTop: 50,
+        marginTop: 20,
         // marginBottom: 20,
         flexDirection: "row",
         justifySelf: "center",
         alignItems: "center",
-        // alignSelf: "top",
+        alignSelf: "center",
         borderColor: "white",
         borderWidth: 1,
         paddingTop: 5,
@@ -35,6 +47,23 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         width: "90%",
         color: "white",
+    },
+
+    itemText: {
+        fontSize: 18,
+        paddingLeft: 10,
+        width: "90%",
+        color: "white",
+    },
+
+    groceryText: {
+        fontSize: 18,
+        color: "turquoise",
+        alignSelf: "center",
+    },
+
+    groceryList: {
+        marginTop: 15,
     },
 
     groceryRow: {

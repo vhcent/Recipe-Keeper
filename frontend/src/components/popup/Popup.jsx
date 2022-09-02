@@ -146,7 +146,7 @@ export default function Popup({
                     size={30}
                     color={"green"}
                     style={styles.icon}
-                    onPress={() => addGrocery(element.original)}
+                    onPress={() => {loggedIn ? addGrocery(element.original) : setLoginModalVisible(true)}}
                   />
                 </View>
               );

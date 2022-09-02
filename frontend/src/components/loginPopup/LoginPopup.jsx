@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./Styles";
 import {
-  Text,
-  View,
-  Image,
-  Touchable,
-  TouchableHighlight,
-  TouchableOpacity,
-  Modal,
-  ScrollView,
-  Header,
+    Text,
+    View,
+    Image,
+    Touchable,
+    TouchableHighlight,
+    TouchableOpacity,
+    Modal,
+    ScrollView,
+    Header,
 } from "react-native";
 import Auth from "../../components/auth/Auth.jsx";
 import * as WebBrowser from "expo-web-browser";
@@ -20,34 +20,38 @@ import { Fontisto } from "@expo/vector-icons";
 import { AppContext } from "../../components/AppContextProvider.jsx";
 
 export default function Popup({ loginModalVisible, setLoginModalVisible }) {
-  const [loggedIn, setLoggedIn] = useContext(AppContext);
-  // const [visible, setVisible] = useState(loginModalVisible);
+    const [loggedIn, setLoggedIn] = useContext(AppContext);
+    // const [visible, setVisible] = useState(loginModalVisible);
 
-  useEffect(() => {
-    if (loggedIn) {
-      setLoginModalVisible(false);
-      // setVisible(false);
-    }
-  }, [loggedIn]);
+    useEffect(() => {
+        if (loggedIn) {
+            setLoginModalVisible(false);
+            // setVisible(false);
+        }
+    }, [loggedIn]);
 
-  return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={loginModalVisible}
-      style={styles.modalContainer}
-    >
-      <AntDesign
-        id="close"
-        name="close"
-        size={30}
-        style={styles.close}
-        onPress={() => setLoginModalVisible(false)}
-      />
-      <View>
-        <Text>Please Log In to use this feature.</Text>
-      </View>
-      <Auth />
-    </Modal>
-  );
+    return (
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={loginModalVisible}
+            style={styles.modalContainer}
+        >
+            <View style={styles.container}>
+                <AntDesign
+                    id="close"
+                    name="close"
+                    size={25}
+                    style={styles.close}
+                    onPress={() => setLoginModalVisible(false)}
+                />
+                <View>
+                    <Text style={styles.title}>
+                        Please Log in to use the grocery list and save recipes
+                    </Text>
+                </View>
+                <Auth />
+            </View>
+        </Modal>
+    );
 }

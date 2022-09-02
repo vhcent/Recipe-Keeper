@@ -19,11 +19,11 @@ const Search = ({ navigation }) => {
         <View style={styles.container}>
             <View style={styles.scrollViewContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
-            <RecipeSearch
-                data="dataTesting"
-                setRecipes={setRecipeData}
-                setDetails={setRecipeDetails}
-            />
+                    <RecipeSearch
+                        data="dataTesting"
+                        setRecipes={setRecipeData}
+                        setDetails={setRecipeDetails}
+                    />
                     <RecipeDisplay
                         data={recipeData}
                         details={recipeDetails}
