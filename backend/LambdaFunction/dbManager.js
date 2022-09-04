@@ -74,7 +74,7 @@ function addRecipe(name, URL, userID, photo, recipeID) {
 function updateRecipeNotes(ID, notes) {
     return new Promise(function (resolve, reject) {
         connection.query(
-            `update Saved set Notes = "${notes}" where ID = ${ID}`,
+            `update Saved set Notes = "${notes}" where ID = ${ID};`,
             (error, result) => {
                 // console.log(result);
                 if (error) {
