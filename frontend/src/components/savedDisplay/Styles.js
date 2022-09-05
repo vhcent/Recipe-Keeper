@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         flex: 1,
         color: "white",
+        placeholderTextColor: "red",
+        
     },
 });
 

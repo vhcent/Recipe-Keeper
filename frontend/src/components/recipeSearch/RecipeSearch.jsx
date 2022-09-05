@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useContext, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,23 +9,55 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import styles from "./Styles";
-import { searchByRecipe, searchByIngredients } from "./RecipeSearch.js";
+import { searchByRecipe, searchByIngredients, getRecents } from "./RecipeSearch.js";
+import { AppContext } from "../../components/AppContextProvider.jsx";
 
 class RecipeSearch extends Component {
+
+    static contextType = AppContext;
+
     constructor(props) {
         super(props);
-
         // console.log("props", props.data)
         // this.props.callBack("NewDATA")
         // console.log(this.props.data)
-
+        
         this.state = {
             data: this.props.data,
             byRecipe: true,
+            isRecents: true,
+            //loggedIn: this.loggedIn,
         };
     }
 
+    async handleGetRecents() {
+        this.state.isRecents = true;
+        //if user is logged in, sets recipe data to recent recipes
+        if(this.context[0]) { //equivalent to loggedIn from AppContext
+            console.log("user logged in")
+            let recents = await getRecents();
+            
+            let sortedData = new Array(recents.length);
+            for(let i = 0 ; i < recents.length ; i++){
+                let newObj = {};
+                newObj['id'] = recents[i].RecipeID;
+                newObj['title'] = recents[i].Name;
+                newObj['image'] = recents[i].Photo;
+                sortedData[parseInt(recents[i].Position, 10) - 1] = newObj;
+                console.log("position", parseInt(recents[i].Position, 10) - 1);
+                //sortedData[recents[i].position - 1] = "test";
+                console.log(newObj);
+            }
+            
+            console.log("trasnformed and sorted ", sortedData);
+            
+            this.setState({ data: sortedData});
+            this.props.setRecipes(sortedData);
+        }
+    }
+
     async handleSearch(value) {
+        this.state.isRecents = false;
         if (this.state.byRecipe) {
             // Search for recipe and store it in state
             let recipes = await searchByRecipe(value);
@@ -75,6 +107,17 @@ class RecipeSearch extends Component {
                         {this.state.byRecipe
                             ? "Search by Ingredients"
                             : "Search by Recipe"}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.changeSearchContainer}
+                    onPress={() => {
+                            this.handleGetRecents()
+                        }
+                    }
+                >
+                    <Text style={styles.changeSearchText}>
+                        "Show Recents"
                     </Text>
                 </TouchableOpacity>
             </View>

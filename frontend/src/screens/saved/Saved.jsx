@@ -41,7 +41,7 @@ const SearchRecipe = ({ navigation }) => {
                 <View style={styles.log}>
                     <Auth />
                 </View>
-                {loggedIn ? (
+                {(loggedIn && recipeList) ? (
                     <SavedDisplay
                         data={recipeList}
                         saveChange={saveChange}

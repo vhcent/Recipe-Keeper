@@ -5,6 +5,7 @@ import {
     deleteRecipe,
     modifyNotes,
     getDetails,
+    updateRecent,
 } from "./SavedDisplay.js";
 import {
     StyleSheet,
@@ -39,8 +40,6 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
     for (let i = 0; i < data.length; i++) {
         notesList.push(data[i].Notes);
     }
-    console.log("Here is your notes");
-    console.log(notesList);
 
     async function showModal(id) {
         if (cache.hasOwnProperty(id)) {
@@ -59,12 +58,16 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
         <View style={styles.container}>
             <Text style={styles.header}>Saved Recipes</Text>
             {data.map((element, key) => {
-                console.log(element);
+                //console.log(element);
                 return (
                     <View key={key} style={styles.recipeBlock}>
                         <TouchableOpacity
                             onPress={() => {
                                 showModal(element.RecipeID);
+                                updateRecent(element.RecipeID, 
+                                    element.Photo,
+                                    element.URL,
+                                    element.Name)
                             }}
                         >
                             <Text style={styles.recipeTitle}>
@@ -75,6 +78,10 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
                             <TouchableOpacity
                                 onPress={() => {
                                     showModal(element.RecipeID);
+                                    updateRecent(element.RecipeID, 
+                                        element.Photo,
+                                        element.URL,
+                                        element.Name)
                                 }}
                             >
                                 <Image
@@ -85,13 +92,13 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
                                 />
                             </TouchableOpacity>
                             <View style={{ padding: 15, maxWidth: 150 }}>
-                                <TextInput
+                                {notesList[key] ? (
+                                    <TextInput
                                     style={styles.textInput}
                                     multiline={true}
                                     defaultValue={
-                                        notesList[key]
-                                            ? element.Notes
-                                            : "Empty Notes"//need a switch to trigger re-render, placeholder instead of defaultvalue
+                                      element.Notes
+                                        //need a switch to trigger re-render, placeholder instead of defaultvalue
                                     }
                                     onChangeText={(text) => {
                                         notesList[key] = text;
@@ -101,7 +108,24 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
                                         //console.log("Done editing, here is what I have ", notesList[key])
                                         modifyNotes(element.ID, notesList[key]);
                                     }}
-                                ></TextInput>
+                                    ></TextInput>
+                                ):(
+                                    <TextInput
+                                    style={styles.textInput}
+                                    multiline={true}
+                                    placeholder="Add recipe notes here!"//need a switch to trigger re-render, placeholder instead of defaultvalue
+                                    placeholderTextColor="rgba(255,255,255,0.3)"
+                                    onChangeText={(text) => {
+                                        notesList[key] = text;
+                                        //or set the state over entirely
+                                    }}
+                                    onEndEditing={() => {
+                                        //console.log("Done editing, here is what I have ", notesList[key])
+                                        modifyNotes(element.ID, notesList[key]);
+                                    }}
+                                    ></TextInput>
+                                )}
+                                
                             </View>
                         </View>
                     </View>

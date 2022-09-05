@@ -1,4 +1,5 @@
-import { SPOONACULAR_KEY } from "@env";
+import { SPOONACULAR_KEY, API_ENDPOINT } from "@env";
+import * as StorageUtils from "../../components/StorageUtils.js";
 
 export async function searchByRecipe(recipeName) {
     // async function to search for recipes by name
@@ -17,6 +18,7 @@ export async function searchByRecipe(recipeName) {
         }
     );
     let json = await response.json();
+    console.log("spoonacular", json.results);
     return json.results;
 }
 
@@ -48,5 +50,30 @@ export async function searchByIngredients(ingredientsString) {
         }
     );
     let json = await response.json();
+    return json;
+}
+
+
+export async function getRecents(){
+    let userID = await StorageUtils.getStorageItem("@user_id");
+    console.log(userID);
+
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
+    console.log(bearerToken);
+
+    let response = await fetch(
+        `${API_ENDPOINT}/recent?userID=${userID}`,
+        {
+            method: "Get",
+            headers: { Authorization: "Bearer " + bearerToken },
+            //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
+        }
+    );
+
+    let json = await response.json();
+    console.log("recents ", json)
+
+    
+    
     return json;
 }

@@ -45,11 +45,9 @@ export async function unsaveRecipe(recipeID) {
 }
 
 export async function saveRecipe(recipeID, photo, url, title) {
+    //updateRecent(recipeID, photo, url, title);
     let userID = await StorageUtils.getStorageItem("@user_id");
-    console.log(userID);
-
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
-    console.log("bearer", bearerToken);
 
     let postBody = {
         userID: userID,
@@ -70,6 +68,37 @@ export async function saveRecipe(recipeID, photo, url, title) {
 
     console.log("saveRecipeCalled: ", response.json());
 }
+
+
+export async function updateRecent(recipeID, photo, url, title){
+    let userID = await StorageUtils.getStorageItem("@user_id");
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
+
+    let postBody = {
+        userID: userID,
+        recipeID: recipeID,
+        photo: photo,
+        url: url,
+        name: title,
+    };
+
+    console.log("user id", userID);
+    console.log("postBody", JSON.stringify(postBody));
+    console.log("postBodyNonJSON", postBody);
+
+    let response = await fetch(
+        `https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp/recent`, //${API_ENDPOINT}/recipes`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + bearerToken,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postBody),
+        }
+    );
+}
+
 
 export async function addGrocery(name) {
     let userID = await StorageUtils.getStorageItem("@user_id");

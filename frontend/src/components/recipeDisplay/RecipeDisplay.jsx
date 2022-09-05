@@ -5,6 +5,7 @@ import {
     getDuplicates,
     saveRecipe,
     unsaveRecipe,
+    updateRecent,
 } from "./RecipeDisplay.js";
 import {
     StyleSheet,
@@ -40,6 +41,7 @@ export default function RecipeDisplay({ data }) {
     //hashmap -> [key] is recipeID, [value] is true or false if the recipe is saved
 
     useEffect(() => {
+        
         console.log("logged in?", loggedIn)
         // Create comma seperated string of all recipe IDs
         let recipeIDString = "";
@@ -61,6 +63,7 @@ export default function RecipeDisplay({ data }) {
     }, [data, saveChange, loggedIn, loginModalVisible]);
 
     async function showModal(id) {
+        
         if (cache.hasOwnProperty(id)) {
             setModalData(cache[id]);
         } else {
@@ -111,6 +114,12 @@ export default function RecipeDisplay({ data }) {
                             <TouchableHighlight
                                 onPress={() => {
                                     showModal(element.id);
+                                    
+                                    updateRecent(element.id,
+                                        element.image,
+                                        "undefined",
+                                        element.title);
+                                        
                                 }}
                             >
                                 <View>

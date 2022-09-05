@@ -71,3 +71,29 @@ export async function modifyNotes(ID, Notes) {
         }
     );
 }
+
+
+export async function updateRecent(recipeID, photo, url, title){
+    let userID = await StorageUtils.getStorageItem("@user_id");
+    let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
+
+    let postBody = {
+        userID: userID,
+        recipeID: recipeID,
+        photo: photo,
+        url: url,
+        name: title,
+    };
+
+    let response = await fetch(
+        `https://cmivyuanic.execute-api.us-west-2.amazonaws.com/recipeApp/recent`, //${API_ENDPOINT}/recipes`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + bearerToken,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postBody),
+        }
+    );
+}
