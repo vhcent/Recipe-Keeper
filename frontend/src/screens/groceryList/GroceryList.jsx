@@ -40,6 +40,7 @@ const Grocery = ({ navigation }) => {
             // The screen is focused
             // Call any action
             getGrocery(setGroceryList);
+            //while(!groceryList){}
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;

@@ -25,6 +25,7 @@ const SearchRecipe = ({ navigation }) => {
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
             getAllRecipes(setRecipeList);
+            //while(!recipeList){}
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
