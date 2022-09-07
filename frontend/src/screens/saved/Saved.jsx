@@ -41,6 +41,7 @@ const SearchRecipe = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.log}>
                     <Auth />
+                    
                 </View>
                 {(loggedIn && recipeList) ? (
                     <SavedDisplay
@@ -48,7 +49,10 @@ const SearchRecipe = ({ navigation }) => {
                         saveChange={saveChange}
                         setSaveChange={setSaveChange}
                     />
-                ) : null}
+                ) : 
+                <Text style={styles.text}>
+                            Log in to use the saved recipes feature!
+                </Text>}
             </ScrollView>
         </View>
     );

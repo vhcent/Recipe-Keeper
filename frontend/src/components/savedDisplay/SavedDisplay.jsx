@@ -57,7 +57,10 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Saved Recipes</Text>
-            {data.map((element, key) => {
+            {console.log("Saved Display data type ", typeof(data))}
+            {console.log("The data ", data)}
+            {console.log(data['message'])}
+            {data['message'] === undefined ? data.map((element, key) => {
                 //console.log(element);
                 return (
                     <View key={key} style={styles.recipeBlock}>
@@ -130,7 +133,7 @@ export default function SavedDisplay({ data, saveChange, setSaveChange }) {
                         </View>
                     </View>
                 );
-            })}
+            }): null}
             {modalVisible ? (
                 <Popup
                     modalVisible={modalVisible}

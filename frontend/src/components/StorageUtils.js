@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
         return value;
       }
       else{
-        //console.log("returning false");
+        console.log("returning false");
         return false;
       } 
     } catch(e) {

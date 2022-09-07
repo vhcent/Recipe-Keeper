@@ -54,7 +54,7 @@ const Grocery = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {loggedIn && groceryList != null ? (
+                {loggedIn ? (
                     <View>
                         <View style={styles.log}>
                             <Auth />
@@ -81,7 +81,10 @@ const Grocery = ({ navigation }) => {
                                 {" "}
                                 Grocery List{" "}
                             </Text>
-                            {groceryList.map((element, key) => {
+                            {console.log("Grocery list type ", typeof(groceryList))}
+                            {console.log("The groceries", groceryList)}
+                            {console.log("grocerylist length:", groceryList.length)}
+                            { groceryList['message'] === undefined ? groceryList.map((element, key) => {
                                 return (
                                     <View style={styles.groceryRow}>
                                         <Text style={styles.itemText}>
@@ -99,7 +102,7 @@ const Grocery = ({ navigation }) => {
                                         />
                                     </View>
                                 );
-                            })}
+                            }) : null}
                         </View>
                     </View>
                 ) : (

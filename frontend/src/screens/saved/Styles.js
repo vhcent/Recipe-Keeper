@@ -12,7 +12,12 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "100%",
     },
-
+    text: {
+        fontSize: 20,
+        paddingLeft: 10,
+        width: "90%",
+        color: "white",
+    },
     scrollContainer: {
         justifyContent: "flex-start",
         alignItems: "center",

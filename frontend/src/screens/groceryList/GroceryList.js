@@ -6,21 +6,31 @@ export async function getGrocery(setGroceryList) {
     let userID = await StorageUtils.getStorageItem("@user_id");
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
 
-    let response = await fetch(
+   fetch(
         `${API_ENDPOINT}/grocery?userID=${userID}`,
         {
             method: "Get",
             headers: { Authorization: "Bearer " + bearerToken },
             //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
         }
-    );
+    )
+    .then(async (response) => {
+        let json = await response.json();
+        console.log("fetch grocery success:",json)
+        setGroceryList(json);
+    })
+    .catch((error) => {
+        console.log(" Fetch grocery Error:", error);
+        setGroceryList([]);
+    })
 
-    //console.log("getgrocery repo", response)
-    let json = await response.json();
-    console.log(json)
-    console.log(json[0])
-    console.log(typeof(json))
-    setGroceryList(json);
+    // console.log("grocery response ", response)
+    // //console.log("getgrocery repo", response)
+    // let json = await response.json();
+    // console.log(json)
+    // console.log(json[0])
+    // console.log(typeof(json))
+    // setGroceryList(json);
 }
 
 export async function deleteGrocery(ID) {

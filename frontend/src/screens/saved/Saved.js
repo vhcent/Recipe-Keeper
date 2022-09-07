@@ -6,19 +6,29 @@ export async function getAllRecipes(setRecipeList) {
     let userID = await StorageUtils.getStorageItem("@user_id");
     let bearerToken = await StorageUtils.getStorageItem("@bearer_token");
 
-    let response = await fetch(
+    fetch(
         `${API_ENDPOINT}/recipes?userID=${userID}`,
         {
             method: "Get",
             headers: { Authorization: "Bearer " + bearerToken },
             //headers: {'Authorization': 'Bearer ' + bearerToken + 'l'},
         }
-    );
+    )
+    .then(async (response) => {
+        let json = await response.json();
+        console.log("fetch saved success:", json)
+        setRecipeList(json)
+    })
+    .catch((error) => {
+        console.log("fetch saved error:", err)
+        setRecipeList([])
+    });
+    /*
+    console.log("saved response ", response)
 
-    let json = await response.json();
     console.log(json)
     setRecipeList(json)
-    return json;
+    */
 }
 
 export async function deleteRecipe(ID) {
