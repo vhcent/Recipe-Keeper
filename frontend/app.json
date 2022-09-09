@@ -5,10 +5,10 @@
         "slug": "RecipeKeeper",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./src/assets/donut.png",
+        "icon": "./src/assets/logo.png",
         "userInterfaceStyle": "light",
         "splash": {
-            "image": "./src/assets/donut.png",
+            "image": "./src/assets/logo.png",
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
@@ -23,12 +23,12 @@
             "package": "com.recipeKeeper",
             "versionCode": 1,
             "adaptiveIcon": {
-                "foregroundImage": "./src/assets/donut.png",
+                "foregroundImage": "./src/assets/logo.png",
                 "backgroundColor": "#FFFFFF"
             }
         },
         "web": {
-            "favicon": "./src/assets/donut.png"
+            "favicon": "./src/assets/logo.png"
         },
         "extra": {
             "eas": {

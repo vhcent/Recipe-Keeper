@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         width: "90%",
         color: "white",
+        textAlign: "center",
     },
     scrollContainer: {
         justifyContent: "flex-start",
