@@ -1,34 +1,39 @@
 {
-  "expo": {
-    "owner": "jfu",
-    "name": "frontend",
-    "slug": "frontend",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./src/assets/icon.jpg",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./src/assets/splash.jpg",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/favicon.jpg",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./src/assets/favicon.jpg"
+    "expo": {
+        "owner": "vhcent",
+        "name": "Recipe Keeper",
+        "slug": "RecipeKeeper",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./src/assets/donut.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./src/assets/donut.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "package": "com.recipeKeeper",
+            "versionCode": 1,
+            "adaptiveIcon": {
+                "foregroundImage": "./src/assets/donut.png",
+                "backgroundColor": "#FFFFFF"
+            }
+        },
+        "web": {
+            "favicon": "./src/assets/donut.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "8df9c141-9712-4933-be33-f1e55f92a1a4"
+            }
+        }
     }
-  }
 }
