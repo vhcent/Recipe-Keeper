@@ -30,6 +30,7 @@ We also wanted to protect our API endpoints and incorporate a 3rd party login sy
 To authorize and project our multi-endpoint API, we decided to follow OAuth 2.0 prodedures  -->
 ### *Features*
 Searching for Recipes by their Names
+
 <img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%201.jpg?raw=true">
 
 Grocery List 
