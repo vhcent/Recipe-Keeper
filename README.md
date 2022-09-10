@@ -6,6 +6,7 @@ An android recipe keeper app that allows for the searching and storage of recipe
 
 # Installation #
 [Download and try the app here.](whatever google play link it publishes)
+[Aroop Biswal](https://github.com/AroopBiswal)
 
 
 
