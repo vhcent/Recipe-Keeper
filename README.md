@@ -32,16 +32,11 @@ To authorize and project our multi-endpoint API, we decided to follow OAuth 2.0 
 
 
 | Searching for Recipes by their Names| Grocery List  |
-| ------------- | ------------- |
-|<img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%201.jpg?raw=true">  | <img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">  |
+| :-------------: | :-------------: | 
+|<img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%201.jpg?raw=true">  | <img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">  |
 
+| Saved Recipes | Recipe View with Ingredients and Integrated Grocery List |
+| :-------------: | :-------------: |
+|<img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%203.jpg?raw=true">  | <img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">  |
 
-Saved Recipes
-
-<img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%203.jpg?raw=true">
-Recipe View with Integrated Grocery List and Ingredients?
-
-Login Functionality
-
-Recently Viewed Recipes?
 
