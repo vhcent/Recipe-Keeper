@@ -38,22 +38,3 @@ To authorize and project our multi-endpoint API, we decided to follow OAuth 2.0 
 | Saved Recipes | Recipe View with Ingredients and Integrated Grocery List |
 | :-------------: | :-------------: |
 |<img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%203.jpg?raw=true">  | <img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%204.jpg?raw=true">  |
-
-Video Script: 
-
-Login
-
-Search for Recipes by name
-
-Heart from both Recipe View and Grid View
-
-Add some groceries
-
-Switch to groceries tab
-
-Switch to Saved tab
-
-Click on some saved Recipes
-
-
-
