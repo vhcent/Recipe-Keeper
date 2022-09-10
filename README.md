@@ -10,7 +10,7 @@ An android recipe keeper app that allows for the searching and storage of recipe
 
 
 
-### Video(label each image with the features it  showcases) ##
+### Video Demo ##
 
 # How we built this app #
 ### *Tech Stack*
@@ -39,4 +39,4 @@ To authorize and project our multi-endpoint API, we decided to follow OAuth 2.0 
 | :-------------: | :-------------: |
 |<img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%203.jpg?raw=true">  | <img alt="image" width="400" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">  |
 
-
+Video Script
