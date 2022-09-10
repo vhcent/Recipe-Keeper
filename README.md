@@ -29,13 +29,12 @@ To further enhance our app, we wanted to create an account login system. This wa
 We also wanted to protect our API endpoints and incorporate a 3rd party login system.
 To authorize and project our multi-endpoint API, we decided to follow OAuth 2.0 prodedures  -->
 ### *Features*
-Searching for Recipes by their Names
 
-<img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%201.jpg?raw=true">
 
-Grocery List 
+| Searching for Recipes by their Names| Grocery List  |
+| ------------- | ------------- |
+|<img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%201.jpg?raw=true">  | <img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">  |
 
-<img alt="image" width="300" src="https://github.com/vhcent/Recipe-Keeper/blob/main/frontend/src/assets/phone%20screenshot%202.jpg?raw=true">
 
 Saved Recipes
 
