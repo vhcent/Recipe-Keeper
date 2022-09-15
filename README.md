@@ -5,8 +5,7 @@
 An android recipe keeper app that allows for the searching and storage of recipes and groceries. Using the Spoonacular API for a database of recipes and a user login system for user-based storage, Recipe Keeper is a convenient way to discover and organize recipes. 
 
 # Installation #
-[Download and try the app here.](whatever google play link it publishes)
-<!-- [Aroop Biswal](https://github.com/AroopBiswal) -->
+[Download and try the app here.](https://play.google.com/store/apps/details?id=com.recipeKeeper)
 
 
 
